@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AvailabilityStart__c</fullName>
+    <defaultValue>NOW()</defaultValue>
+    <description>The Date and time when the product is available.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The Date and time when the product is available.</inlineHelpText>
+    <label>Availability Start</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

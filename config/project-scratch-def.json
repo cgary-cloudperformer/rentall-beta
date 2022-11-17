@@ -1,0 +1,21 @@
+{
+  "orgName": "RentAll Scratch Org",
+  "edition": "Developer",
+  "adminEmail": "chris.gary@vectorx.com",
+  "features": ["API","Communities","ContactsToMultipleAccounts","DebugApex","DefaultWorkflowUser","DeferSharingCalc","EnableSetPasswordInApi",
+    "ForceComPlatform","FlowSites","ForceComPlatform","Interaction","LightningSalesConsole","LightningServiceConsole",
+    "MarketingUser","MultiCurrency","SalesUser","ServiceCloud","ServiceUser","Workflow"],
+  "settings": {
+    "communitiesSettings": {
+      "enableNetworksEnabled":true,
+      "applyLoginPageTypeToEmbeddedLogin":true,
+      "enableUsernameUniqForOrgPref":true
+    },
+    "lightningExperienceSettings": {
+      "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+      "enableS1EncryptedStoragePref2": false
+    }
+  }
+}

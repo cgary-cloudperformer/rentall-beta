@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Each</fullName>
+        <default>true</default>
+        <label>Each</label>
+    </customValue>
+    <customValue>
+        <fullName>Box</fullName>
+        <default>false</default>
+        <label>Box</label>
+    </customValue>
+    <customValue>
+        <fullName>Bundle</fullName>
+        <default>false</default>
+        <label>Bundle</label>
+    </customValue>
+    <customValue>
+        <fullName>Case</fullName>
+        <default>false</default>
+        <label>Case</label>
+    </customValue>
+    <customValue>
+        <fullName>Crate</fullName>
+        <default>false</default>
+        <label>Crate</label>
+    </customValue>
+    <customValue>
+        <fullName>Package</fullName>
+        <default>false</default>
+        <label>Package</label>
+    </customValue>
+    <customValue>
+        <fullName>Palette</fullName>
+        <default>false</default>
+        <label>Palette</label>
+    </customValue>
+    <description>Unit of Measure or Unit of Packaging.  How Items are packaged. the smallest unit of packaging.</description>
+    <masterLabel>Unit Of Package</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

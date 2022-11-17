@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#22A705</headerColor>
+        <logo>logoblack</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
+    </brand>
+    <description>Rental Application</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <label>RentAll</label>
+    <navType>Standard</navType>
+    <tabs>RentalProduct__c</tabs>
+    <tabs>Category__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>RentAll_UtilityBar</utilityBar>
+</CustomApplication>
