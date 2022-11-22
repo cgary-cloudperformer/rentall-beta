@@ -13,3 +13,6 @@ package.xml
 
 # Ignore Profiles
 **/*.profile-meta.xml
+
+# Ignore FieldRestrictionRules
+**/fieldRestrictionRules/**

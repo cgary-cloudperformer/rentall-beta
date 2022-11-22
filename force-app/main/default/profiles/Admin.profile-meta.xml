@@ -3,34 +3,188 @@
     <applicationVisibilities>
         <application>RentAll</application>
         <default>false</default>
-        <visible>true</visible>
+        <visible>false</visible>
     </applicationVisibilities>
     <custom>false</custom>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Category__c.Parent__c</field>
+        <field>Account.AccountNumber</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>RentalProduct__c.AvailabilityEnd__c</field>
+        <field>Account.AccountSource</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>RentalProduct__c.Cost__c</field>
+        <field>Account.AnnualRevenue</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>RentalProduct__c.Description__c</field>
+        <field>Account.BillingAddress</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>RentalProduct__c.IsAvailable__c</field>
+        <field>Account.CleanStatus</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.DandbCompanyId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Description</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.DunsNumber</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Fax</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Industry</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Jigsaw</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.NaicsCode</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.NaicsDesc</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.NumberOfEmployees</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.OperatingHoursId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Ownership</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ParentId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Phone</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Rating</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.ShippingAddress</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Sic</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.SicDesc</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Site</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.TickerSymbol</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Tradestyle</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Type</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Website</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.YearStarted</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Category__c.Parent__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>RentalProduct__c.AvailabilityEnd__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>RentalProduct__c.Cost__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>RentalProduct__c.Description__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>RentalProduct__c.IsAvailable__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>RentalProduct__c.SerializedTracking__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>RentalProduct__c.Vendor__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <layoutAssignments>
+        <layout>Account-RentalVendor</layout>
+        <recordType>Account.RentAllVendor</recordType>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Category__c-Category Layout</layout>
     </layoutAssignments>
@@ -40,6 +194,15 @@
     <layoutAssignments>
         <layout>RentalProduct__c-Rental Product Layout</layout>
     </layoutAssignments>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Account</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
@@ -67,12 +230,26 @@
         <object>RentalProduct__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.RentAllLocation</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <default>false</default>
+        <recordType>Account.RentAllVendor</recordType>
+        <visible>false</visible>
+    </recordTypeVisibilities>
     <tabVisibilities>
         <tab>Category__c</tab>
-        <visibility>DefaultOn</visibility>
+        <visibility>Hidden</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>RentalProduct__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>standard-Account</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>
@@ -502,6 +679,10 @@
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>
+        <name>ManageOrchInstsAndWorkItems</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
         <name>ManagePackageLicenses</name>
     </userPermissions>
     <userPermissions>
@@ -659,6 +840,10 @@
     <userPermissions>
         <enabled>true</enabled>
         <name>ShowCompanyNameAsUserBadge</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>SocialInsightsLogoAdmin</name>
     </userPermissions>
     <userPermissions>
         <enabled>true</enabled>

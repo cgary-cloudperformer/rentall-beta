@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SerializedTracking__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Checkbox that represents if each item in the inventory should be counted individually and marked with a serial number.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Represents if each item in the inventory related to this product should be counted individually and marked with a serial number.</inlineHelpText>
+    <label>Serialized Tracking</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
