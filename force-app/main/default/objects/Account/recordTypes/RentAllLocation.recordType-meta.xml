@@ -2,6 +2,7 @@
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>RentAllLocation</fullName>
     <active>true</active>
+    <compactLayoutAssignment>RentallLocationCompact</compactLayoutAssignment>
     <description>Location that holds rental product inventory</description>
     <label>RentAll Location</label>
     <picklistValues>

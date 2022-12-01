@@ -182,11 +182,18 @@
         <readable>true</readable>
     </fieldPermissions>
     <layoutAssignments>
+        <layout>Account-RentalLocation</layout>
+        <recordType>Account.RentAllLocation</recordType>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Account-RentalVendor</layout>
         <recordType>Account.RentAllVendor</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Category__c-Category Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>InventoryItem__c-Inventory Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>RentalProductCategory__c-Rental Product Category Layout</layout>
@@ -210,6 +217,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Category__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>InventoryItem__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>

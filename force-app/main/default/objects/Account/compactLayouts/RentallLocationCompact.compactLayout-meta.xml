@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RentallLocationCompact</fullName>
+    <fields>Name</fields>
+    <fields>ShippingAddress</fields>
+    <fields>Phone</fields>
+    <fields>NumberOfEmployees</fields>
+    <label>RentAll Location Compact</label>
+</CompactLayout>
