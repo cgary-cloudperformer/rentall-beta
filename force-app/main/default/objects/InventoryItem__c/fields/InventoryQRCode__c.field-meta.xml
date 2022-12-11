@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>InventoryQRCode__c</fullName>
+    <description>QR Code for the inventory item.</description>
+    <externalId>false</externalId>
+    <formula>IMAGE(&quot;https://api.qrserver.com/v1/create-qr-code/?data=&quot; +  Id, &quot;QR Code For &quot; +  RentalProduct__r.Name + &quot; at &quot; +  Location__r.Name, 200, 200)</formula>
+    <inlineHelpText>QR Code for the inventory item.</inlineHelpText>
+    <label>Inventory QR Code</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

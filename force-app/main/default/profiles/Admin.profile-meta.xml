@@ -153,6 +153,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>InventoryItem__c.InventoryQRCode__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>InventoryItem__c.SerialNumber__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>RentalProduct__c.AvailabilityEnd__c</field>
         <readable>false</readable>
     </fieldPermissions>
@@ -247,6 +257,11 @@
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <recordTypeVisibilities>
+        <default>true</default>
+        <recordType>Account.RentAllCustomer</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
         <default>false</default>
         <recordType>Account.RentAllLocation</recordType>
         <visible>false</visible>
@@ -259,6 +274,10 @@
     <tabVisibilities>
         <tab>Category__c</tab>
         <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>InventoryItem__c</tab>
+        <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
         <tab>RentalProduct__c</tab>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EnforceInventorySerialization</fullName>
+    <active>true</active>
+    <description>Inventory related to a product that is marked as serializable must only have a count of 1 and must have a serial number</description>
+    <errorConditionFormula>IF(RentalProduct__r.SerializedTracking__c == TRUE &amp;&amp; ( InventoryCount__c &gt; 1 ||  ISBLANK( SerialNumber__c )),TRUE,FALSE )</errorConditionFormula>
+    <errorMessage>When a product is serializable, the inventory count must be one and a serial number of the item must be provided</errorMessage>
+</ValidationRule>
