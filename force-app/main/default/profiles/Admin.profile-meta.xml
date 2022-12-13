@@ -280,6 +280,10 @@
         <visibility>DefaultOff</visibility>
     </tabVisibilities>
     <tabVisibilities>
+        <tab>RentAll_New_Customer_Form</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
         <tab>RentalProduct__c</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
