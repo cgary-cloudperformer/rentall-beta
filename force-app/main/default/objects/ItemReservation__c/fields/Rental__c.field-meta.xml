@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rental__c</fullName>
+    <description>The Parent Rental for the Item Reservation.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The Parent Rental for the Item Reservation.</inlineHelpText>
+    <label>Rental</label>
+    <referenceTo>Rental__c</referenceTo>
+    <relationshipLabel>Items</relationshipLabel>
+    <relationshipName>Items</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

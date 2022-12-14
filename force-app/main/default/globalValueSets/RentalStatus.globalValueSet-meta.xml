@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Tentative</fullName>
+        <default>true</default>
+        <label>Tentative</label>
+    </customValue>
+    <customValue>
+        <fullName>Confirmed</fullName>
+        <default>false</default>
+        <label>Confirmed</label>
+    </customValue>
+    <customValue>
+        <fullName>Delivered</fullName>
+        <default>false</default>
+        <label>Delivered</label>
+    </customValue>
+    <customValue>
+        <fullName>Received</fullName>
+        <default>false</default>
+        <label>Received</label>
+    </customValue>
+    <customValue>
+        <fullName>Fulfilled/Completed</fullName>
+        <default>false</default>
+        <label>Fulfilled/Completed</label>
+    </customValue>
+    <customValue>
+        <fullName>Canceled</fullName>
+        <default>false</default>
+        <label>Canceled</label>
+    </customValue>
+    <description>Values for Rental Status</description>
+    <masterLabel>Rental Status</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

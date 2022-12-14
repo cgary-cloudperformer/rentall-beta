@@ -47,16 +47,6 @@
                     <name>uiBehavior</name>
                     <value>required</value>
                 </fieldInstanceProperties>
-                <fieldItem>Record.InventoryCount__c</fieldItem>
-                <identifier>RecordInventoryCount_cField</identifier>
-            </fieldInstance>
-        </itemInstances>
-        <itemInstances>
-            <fieldInstance>
-                <fieldInstanceProperties>
-                    <name>uiBehavior</name>
-                    <value>required</value>
-                </fieldInstanceProperties>
                 <fieldItem>Record.RentalProduct__c</fieldItem>
                 <identifier>RecordRentalProduct_cField</identifier>
             </fieldInstance>
@@ -93,6 +83,16 @@
                 </fieldInstanceProperties>
                 <fieldItem>Record.Location__c</fieldItem>
                 <identifier>RecordLocation_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>required</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.InventoryCount__c</fieldItem>
+                <identifier>RecordInventoryCount_cField</identifier>
             </fieldInstance>
         </itemInstances>
         <name>Facet-49f61214-8933-4677-98e1-9cd4f25b1a53</name>
