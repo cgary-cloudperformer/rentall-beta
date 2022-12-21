@@ -224,6 +224,9 @@ export default class AddEditRentalItems extends LightningElement {
                 return {'label':columnLabel,'fieldName':columnFieldName,'type':columnDatatype,'editable':columnEditable,
                     'sortable':true};
             });
+            columnDisplayArray.push({'type':'action','typeAttributes':{'rowActions':[
+                {'label':'Delete', 'name':'delete'}
+            ],'menuAlignment':'right'}});
         }
         return columnDisplayArray;
     }
