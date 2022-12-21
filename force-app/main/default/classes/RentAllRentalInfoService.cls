@@ -56,4 +56,24 @@ public with sharing class RentAllRentalInfoService {
         
         return retList;
     }
+    @AuraEnabled
+    public static void deleteItemReservationsById(List<String> reservationIds){
+        try {
+            if(reservationIds == null || reservationIds.isEmpty()){
+                throw new IllegalArgumentException('Reservation Record IDs must be provided');
+            }
+            List<ItemReservation__c> reservationRecords = [SELECT Id FROM ItemReservation__c WHERE Id IN :reservationIds];
+            delete reservationRecords;
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+    @AuraEnabled
+    public static void updateItemReservations(List<Map<String,String>> reservationUpdates){
+        try {
+            
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
 }

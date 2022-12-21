@@ -20,6 +20,7 @@ import LBL_ITEMRESERVATIONSEARCHLABEL from '@salesforce/label/c.RentAllReservati
 import getItemReservationsByRentalId from '@salesforce/apex/RentAllRentalInfoService.getItemReservationsByRentalId';
 import getItemReservationCountByRentalId from '@salesforce/apex/RentAllRentalInfoService.getItemReservationCountByRentalId';
 import findInventoryByName from '@salesforce/apex/RentAllRentalInfoService.findInventoryByName';
+import deleteItemReservationsById from '@salesforce/apex/RentAllRentalInfoService.deleteItemReservationsById';
 
 export default class AddEditRentalItems extends LightningElement {
     @api recordId;
@@ -64,7 +65,6 @@ export default class AddEditRentalItems extends LightningElement {
             lookupCmp.errors = [];
             this.selectedId = selectedIds[0];
         }
-        window.console.log('Item(s) chosen: %S',JSON.stringify(this.selectedId));
     }
     handleNewItemCancel(){
         this.handleShowAddItemClick();
@@ -93,6 +93,20 @@ export default class AddEditRentalItems extends LightningElement {
             window.console.error(err);
         })
     }
+    handleItemReservationRowAction(evt){
+        const action = evt.detail.action;
+        const row = evt.detail.row;
+        switch(action.name){
+            case 'delete':
+                let reservationId = row.Id;
+                this.removeItemReservation(reservationId);
+                break;
+        }
+    }
+    handleItemReservationEditSave(evt){
+        let draftValues = evt.detail.draftValues;
+        window.console.log('Draft Values: %s',JSON.stringify(draftValues,null,"\t"));
+    }
     /**
      * Component specific methods (non-handler)
      */
@@ -110,6 +124,19 @@ export default class AddEditRentalItems extends LightningElement {
         }
         let errorList = lookupCmp.errors;
         return errorList.length === 0 && formInputValidity;
+    }
+    removeItemReservation(reservationId){
+        let reservationIdArray = [];
+        reservationIdArray.push(reservationId);
+        deleteItemReservationsById({'reservationIds':reservationIdArray}).then(()=>{
+            return Promise.all([refreshApex(this.reservationItems),refreshApex(this.lineItemCount)]);
+        }).then(()=>{
+            let notificationEvt = new ShowToastEvent({'title':'Reservation Item Removed','message':`Reservation Item has been deleted`,'variant':'success'});
+            this.dispatchEvent(notificationEvt);
+        }).catch((err)=>{
+            let errEvt = new ShowToastEvent({'title':'Error Deleting Reservation Item','message':`Reservation Item could not be deleted: ${err.body.message}`,'variant':'error'});
+            this.dispatchEvent(errEvt);
+        });
     }
     /**
      * Getters
