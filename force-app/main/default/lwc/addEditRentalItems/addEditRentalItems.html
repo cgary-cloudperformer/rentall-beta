@@ -1,0 +1,43 @@
+<template>
+    <lightning-card title={componentName} heading-level="1">
+        <div slot="actions">
+            <lightning-button label="Add Item" variant="neutral" disabled={showAddItemForm} onclick={handleShowAddItemClick}></lightning-button>
+        </div>
+        <div class="slds-var-m-horizontal_x-small">
+            <template if:true={showAddItemForm}>
+                <div class="slds-grid slds-wrap slds-gutters_small slds-box slds-theme_shade">
+                    <div class="slds-col slds-large-size_1-of-4 slds-small-size_1-of-1 slds-medium-size_1-of-1">
+                        <c-lookup required
+                            onsearch={handleInventorySearch} 
+                            onselectionchange={handleInventorySelectionChange}
+                            label={label.reservationItemSearch} 
+                            min-search-term-length="2"
+                            scroll-after-n-items="4"
+                            placeholder={label.reservationItemSearch}></c-lookup>
+                    </div>
+                    <div class="slds-col slds-large-size_1-of-4 slds-small-size_1-of-1 slds-medium-size_1-of-1">
+                        <lightning-input type="number" name="newItemQuantity" label="Quantity" required class="newItemQuantity"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-large-size_1-of-4 slds-small-size_1-of-1 slds-medium-size_1-of-1">
+                        <lightning-input type="date" value={defaultStartDate} required class="newItemStartDate" label="Start Date"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-large-size_1-of-4 slds-small-size_1-of-1 slds-medium-size_1-of-1">
+                        <lightning-input type="date" value={defaultEndDate} required class="newItemEndDate" label="End Date"></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-button-group class="slds-var-m-top_small">
+                            <lightning-button label="Cancel" variant="neutral" onclick={handleNewItemCancel}></lightning-button>
+                            <lightning-button label="Save" variant="brand" onclick={handleNewItemSave}></lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+            </template>
+            <h2 class="slds-text-heading_small slds-var-m-bottom_small">{label.reservationCount}: {reservationItemCount}</h2>
+            <lightning-datatable 
+                columns={tableColumns} 
+                hide-checkbox-column="true"
+                show-row-number-column="true"
+                data={reservationItems.data} key-field="Id"></lightning-datatable>
+        </div>
+    </lightning-card>
+</template>

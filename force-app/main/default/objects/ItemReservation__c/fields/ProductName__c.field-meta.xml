@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProductName__c</fullName>
+    <description>Product Name of Reservation Item</description>
+    <externalId>false</externalId>
+    <formula>InventoryItem__r.RentalProduct__r.Name</formula>
+    <inlineHelpText>Product Name of Reservation Item</inlineHelpText>
+    <label>Product Name</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

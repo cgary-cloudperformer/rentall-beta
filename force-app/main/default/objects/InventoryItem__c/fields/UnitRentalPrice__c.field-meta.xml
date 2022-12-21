@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UnitRentalPrice__c</fullName>
+    <defaultValue>0.00</defaultValue>
+    <description>Rental Price Per Unit</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Rental Price Per Unit</inlineHelpText>
+    <label>Unit Rental Price</label>
+    <precision>14</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

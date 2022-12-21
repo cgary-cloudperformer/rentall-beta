@@ -16,3 +16,6 @@ package.xml
 
 # Ignore FieldRestrictionRules
 **/fieldRestrictionRules/**
+
+# Ignore AppSwitcher Menu
+**/appMenus/**

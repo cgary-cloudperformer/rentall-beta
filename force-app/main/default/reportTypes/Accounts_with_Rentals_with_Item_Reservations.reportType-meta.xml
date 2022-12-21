@@ -433,6 +433,31 @@
             <field>Quantity__c</field>
             <table>Account.Rentals__r.Items__r</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>ProductName__c</field>
+            <table>Account.Rentals__r.Items__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LocationName__c</field>
+            <table>Account.Rentals__r.Items__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>PerDayUnitRental__c</field>
+            <table>Account.Rentals__r.Items__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>PerDayTotalRental__c</field>
+            <table>Account.Rentals__r.Items__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>TotalRental__c</field>
+            <table>Account.Rentals__r.Items__r</table>
+        </columns>
         <masterLabel>Item Reservations</masterLabel>
     </sections>
 </ReportType>

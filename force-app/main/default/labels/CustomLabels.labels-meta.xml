@@ -24,4 +24,20 @@
         <shortDescription>RentAllCustomerFormStep2</shortDescription>
         <value>Step 2</value>
     </labels>
+    <labels>
+        <fullName>RentAllReservationItemCountLabel</fullName>
+        <categories>RentAll</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RentAllReservationItemCountLabel</shortDescription>
+        <value>Reservation Line Item Count</value>
+    </labels>
+    <labels>
+        <fullName>RentAllReservationItemSearch</fullName>
+        <categories>RentAll</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RentAllReservationItemSearch</shortDescription>
+        <value>Search Items</value>
+    </labels>
 </CustomLabels>

@@ -6,6 +6,11 @@
         <label>Tentative</label>
     </customValue>
     <customValue>
+        <fullName>Canceled</fullName>
+        <default>false</default>
+        <label>Canceled</label>
+    </customValue>
+    <customValue>
         <fullName>Confirmed</fullName>
         <default>false</default>
         <label>Confirmed</label>
@@ -24,11 +29,6 @@
         <fullName>Fulfilled/Completed</fullName>
         <default>false</default>
         <label>Fulfilled/Completed</label>
-    </customValue>
-    <customValue>
-        <fullName>Canceled</fullName>
-        <default>false</default>
-        <label>Canceled</label>
     </customValue>
     <description>Values for Rental Status</description>
     <masterLabel>Rental Status</masterLabel>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Add/Edit Rental Items In Bulk</masterLabel>
+    <description>Component to Add/Edit Rental Items in Bulk to a Rental Agreement</description>
+    <targets>
+        <target>lightning__RecordAction</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="componentName" label="Component Name" type="String" required="true" default="Add/Edit Item Reservations" description="Component Name"/>
+            <objects>
+                <object>Rental__c</object>
+            </objects>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

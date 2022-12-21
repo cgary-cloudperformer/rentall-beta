@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PathAssistant xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <entityName>Rental__c</entityName>
+    <fieldName>Status__c</fieldName>
+    <masterLabel>RentalAgreementStatusPath</masterLabel>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;The reservation/rental is no longer applicable or has not taken place.&lt;/p&gt;</info>
+        <picklistValueName>Canceled</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;Confirmed represents a customer placing a deposit hold on items, meaning that the rental is locked in, and the items should not be rented out to anyone else during this reservation date range. This step normally requires payment of a deposit. This also means that the reservation should not change at this point.&lt;/p&gt;</info>
+        <picklistValueName>Confirmed</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;Delivered is the status where the customer takes possession of the rented items. &lt;/p&gt;</info>
+        <picklistValueName>Delivered</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;The items on the rental have been received from the customer, inspected, and qualified items have been restocked. The deposit has also been refunded to the customer if applicable.&lt;/p&gt;</info>
+        <picklistValueName>Fulfilled/Completed</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;Received is the status where the items have been returned to the customer. The items have yet to undergo inspection and restocking.&lt;/p&gt;</info>
+        <picklistValueName>Received</picklistValueName>
+    </pathAssistantSteps>
+    <pathAssistantSteps>
+        <info>&lt;p&gt;Tentative represents a status for a customer wanting to establish a reservation, check pricing, or put a non-deposit hold on items.&lt;/p&gt;</info>
+        <picklistValueName>Tentative</picklistValueName>
+    </pathAssistantSteps>
+    <recordTypeName>__MASTER__</recordTypeName>
+</PathAssistant>
