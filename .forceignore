@@ -19,3 +19,9 @@ package.xml
 
 # Ignore AppSwitcher Menu
 **/appMenus/**
+
+# Ignore specific flexipages related to the utility bar
+**/flexipages/LightningSales_UtilityBar.flexipage-meta.xml
+**/flexipages/LightningSalesConsole_UtilityBar.flexipage-meta.xml
+# Ignore standard Applications
+**/applications/standard__*
