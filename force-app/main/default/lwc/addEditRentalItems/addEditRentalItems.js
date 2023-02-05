@@ -93,6 +93,12 @@ export default class AddEditRentalItems extends LightningElement {
             window.console.error(err);
         })
     }
+    handleCellChange(evt){
+        window.console.log('Cell Change Event: %s',JSON.stringify(evt.detail.draftValues,null,"\t"));
+    }
+    handleTableUpdateSave(evt){
+        window.console.log('Table Save Event: %s',JSON.stringify(evt.detail.draftValues,null,"\t"));
+    }
     /**
      * Component specific methods (non-handler)
      */

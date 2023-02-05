@@ -19,3 +19,6 @@ package.xml
 
 # Ignore AppSwitcher Menu
 **/appMenus/**
+
+## Ignore LightningService_UtilityBar
+**/LightningService_UtilityBar.flexipage**
