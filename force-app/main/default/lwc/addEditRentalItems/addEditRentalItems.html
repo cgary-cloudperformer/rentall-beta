@@ -37,7 +37,10 @@
                 columns={tableColumns} 
                 hide-checkbox-column="true"
                 show-row-number-column="true"
-                data={reservationItems.data} onrowaction={handleItemReservationRowAction} onsave={handleItemReservationEditSave} key-field="Id"></lightning-datatable>
+                data={reservationItems.data} 
+                key-field="Id"
+                oncellchange={handleCellChange}
+                onsave={handleTableUpdateSave}></lightning-datatable>
         </div>
     </lightning-card>
 </template>

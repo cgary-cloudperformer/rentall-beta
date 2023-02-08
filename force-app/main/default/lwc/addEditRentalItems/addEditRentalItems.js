@@ -93,19 +93,11 @@ export default class AddEditRentalItems extends LightningElement {
             window.console.error(err);
         })
     }
-    handleItemReservationRowAction(evt){
-        const action = evt.detail.action;
-        const row = evt.detail.row;
-        switch(action.name){
-            case 'delete':
-                let reservationId = row.Id;
-                this.removeItemReservation(reservationId);
-                break;
-        }
+    handleCellChange(evt){
+        window.console.log('Cell Change Event: %s',JSON.stringify(evt.detail.draftValues,null,"\t"));
     }
-    handleItemReservationEditSave(evt){
-        let draftValues = evt.detail.draftValues;
-        window.console.log('Draft Values: %s',JSON.stringify(draftValues,null,"\t"));
+    handleTableUpdateSave(evt){
+        window.console.log('Table Save Event: %s',JSON.stringify(evt.detail.draftValues,null,"\t"));
     }
     /**
      * Component specific methods (non-handler)
