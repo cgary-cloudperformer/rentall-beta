@@ -7,18 +7,18 @@ public with sharing class Queueable_GenerateVendors implements System.Queueable,
      * Intenral Constants
      *
      */
-    public static final String RANDOMDATAAPI = 'https://random-data-api.com/';
+    public static final String RANDOMDATAAPI = 'https://random-data-api.com';
     /**
      * Internal Classes
      */
     public class AddressData {
         public String street_address { get; set; }
         public String city { get; set; }
-        public String state { get; set; }
-        public String postcode { get; set; }
         public String state_abbr { get; set; }
-        public Integer id { get; set; }
+        public String zip_code { get; set; }
+        public String community { get; set; }
     }
+    
     
     /**
      * Constructors
@@ -29,85 +29,46 @@ public with sharing class Queueable_GenerateVendors implements System.Queueable,
      * purpose is to call the API for the generation of data that can be used to create Vendor Accounts
      */
     public void execute(System.QueueableContext qc){
-        Queueable_GenerateVendors f = new Queueable_GenerateVendors();
-        Map<String,Schema.RecordTypeInfo> accountRtMap = Account.getSObjectType().getDescribe().getRecordTypeInfosByDeveloperName();
-        Schema.RecordTypeInfo vendorRtInfo = accountRtMap.get('RentAllVendor'); 
-        List<Account> vendorsToInsert = new List<Account>();
-        List<String> vendorNameArray = new List<String>();
-        List<String> vendorStreetArray = new List<String>();
-        List<String> vendorCityArray = new List<String>();
-        List<String> vendorStateArray = new List<String>();
-        List<String> vendorPostalCodeArray = new List<String>();
-        Integer vendorCount = 1;
-        System.attachFinalizer(f);
-        Map<String,String> urlParams = new Map<String,String>();
-        urlParams.put('size','5');
-        urlParams.put('response_type','json');
-        String endpoint = Queueable_GenerateVendors.RANDOMDATAAPI + 'api/v2/addresses' + RentAllUtils.generateUrlSearchPartFromMap(urlParams);
+        //set up the finalizer to catch any issues and handle further instructions.
+        System.attachFinalizer(new Queueable_GenerateVendors());
+        //generate HttpRequest for random data
+        Map<String,String> urlParameterMap = new Map<String,String>{'response_type'=>'json','size'=>'2'};
+        String endpoint = Queueable_GenerateVendors.RANDOMDATAAPI + '/api/v2/addresses' + RentAllUtils.generateUrlSearchPartFromMap(urlParameterMap);
+        System.debug(LoggingLevel.INFO,'\n\n*****\nEndpoint to Access: ' + endpoint + '\n*****\n\n');
+        Http svc = new Http();
         HttpRequest req = new HttpRequest();
+        List<AddressData> responseAddressList = new List<AddressData>();
         req.setMethod('GET');
         req.setEndpoint(endpoint);
         req.setHeader('Content-Type', 'application/json');
-
         HttpResponse res;
-        Http svc = new Http();
         try {
             res = svc.send(req);
-            Integer responseCode = res.getStatusCode();
-            if(responseCode > 299){
-                throw new RentAllUtils.RentAllApiException('There was a problem accessing the API: issue - ' + res.getBody());
-            }
-            System.JSONParser parser = JSON.createParser(res.getBody());
-            while(parser.nextToken() != null) {
-                if(parser.getCurrentToken() == JSONToken.START_ARRAY){
-                    Account vendor = new Account(Name=vendorName,RecordTypeId=vendorRtInfo.getRecordTypeId());
-                    vendorNameArray.add(vendorName);
-                    do {
-                        if(parser.getCurrentToken() == JSONToken.FIELD_NAME){
-                            parser.nextToken();
-                            String fieldName = parser.getCurrentName();
-                            switch on fieldName {
-                                when 'street_address' {
-                                    vendorStreetArray.add(parser.getText());
-                                }
-                                when 'city' {
-                                    vendorCityArray.add(parser.getText());
-                                }
-                                when 'state_abbr' {
-                                    vendorStateArray.add(parser.getText());
-                                }
-                                when 'zip_code' {
-                                    vendorPostalCodeArray.add(parser.getText());
-                                }
-                                when else {
-                                    System.debug(LoggingLevel.INFO,' Field name: ' + parser.getCurrentName() + ', Field Value: ' + parser.getText());
-                                }
-                            }
-                        }
-                    } while (parser.nextToken() != JSONToken.END_ARRAY);
-                    String vendorName = 'Vendor ' + vendorCount;
-                    vendorNameArray.add(vendorName);
-                    vendorCount++;
-                }
-            }
-            Integer count = 0;
-            for(String vendorName:vendorNameArray){
-                Account a = new Account(Name=vendorName,BillingStreet=vendorStreetArray.get(count),BillingCity=vendorCityArray.get(count),
-                    BillingState=vendorStateArray.get(count),BillingPostalCode=vendorPostalCodeArray.get(count));
-                vendorsToInsert.add(a);
-            }
-            if(!vendorsToInsert.isEmpty()){
-                insert vendorsToInsert;
-            }
-        }catch(System.Exception e) {
-            throw e;
+            responseAddressList = (List<AddressData>)JSON.deserialize(res.getBody(), List<AddressData>.class);
+            System.debug(LoggingLevel.INFO,'\n\n*****\nNumber of Addresses: ' + responseAddressList.size() + '\n*****\n\n');
+        } catch(System.Exception ex) {
+            throw ex;
+        }
+        //now lets try to create vendor Accounts using the random data.
+        List<Account> newVendorAcctList = new List<Account>();
+        Schema.RecordTypeInfo vendorRT = Schema.Account.getSObjectType().getDescribe().getRecordTypeInfosByDeveloperName().get('RentAllVendor');
+        for(AddressData ad:responseAddressList){
+            Account vendorAcct = new Account(Name=ad.community,BillingStreet=ad.street_address,BillingCity=ad.city,BillingState=ad.state_abbr,BillingPostalCode=ad.zip_code);
+            newVendorAcctList.add(vendorAcct);
+        }
+        if(!newVendorAcctList.isEmpty()){
+            insert newVendorAcctList;
         }
     }
-
+    /**
+     * This is a finalizer designed to either restart the job if it failed, or move on to the next job if it did not
+     * @param       fc      FinalizerContext - information about the Queueable job that called it.
+     */
     public void execute(System.FinalizerContext fc){
-        if(fc.getResult() == ParentJobResult.UNHANDLED_EXCEPTION){
-            Queueable_GenerateVendors jobUpdate = new Queueable_GenerateVendors();
-            System.enqueueJob(jobUpdate);
+        System.ParentJobResult res = fc.getResult();
+        //handle the exception
+        if(res == System.ParentJobResult.UNHANDLED_EXCEPTION){
+
         }
     }
 
