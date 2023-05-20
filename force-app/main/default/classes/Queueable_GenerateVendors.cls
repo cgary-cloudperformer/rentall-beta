@@ -7,18 +7,18 @@ public with sharing class Queueable_GenerateVendors implements System.Queueable,
      * Intenral Constants
      *
      */
-    public static final String RANDOMDATAAPI = 'https://random-data-api.com/';
+    public static final String RANDOMDATAAPI = 'https://random-data-api.com';
     /**
      * Internal Classes
      */
     public class AddressData {
         public String street_address { get; set; }
         public String city { get; set; }
-        public String state { get; set; }
-        public String postcode { get; set; }
         public String state_abbr { get; set; }
-        public Integer id { get; set; }
+        public String zip_code { get; set; }
+        public String community { get; set; }
     }
+    
     
     /**
      * Constructors
@@ -31,11 +31,15 @@ public with sharing class Queueable_GenerateVendors implements System.Queueable,
     public void execute(System.QueueableContext qc){
         
     }
-
+    /**
+     * This is a finalizer designed to either restart the job if it failed, or move on to the next job if it did not
+     * @param       fc      FinalizerContext - information about the Queueable job that called it.
+     */
     public void execute(System.FinalizerContext fc){
-        if(fc.getResult() == ParentJobResult.UNHANDLED_EXCEPTION){
-            Queueable_GenerateVendors jobUpdate = new Queueable_GenerateVendors();
-            System.enqueueJob(jobUpdate);
+        System.ParentJobResult res = fc.getResult();
+        //handle the exception
+        if(res == System.ParentJobResult.UNHANDLED_EXCEPTION){
+
         }
     }
 

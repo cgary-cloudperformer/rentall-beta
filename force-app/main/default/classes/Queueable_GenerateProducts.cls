@@ -25,7 +25,6 @@ public with sharing class Queueable_GenerateProducts implements System.Queueable
         Map<String,String> paramString = new Map<String,String>();
         paramString.put('fmt','json');
         paramString.put('results','100');
-        paramString.put('Content-Type','application/json');
         String endpoint = RANDOMPRODUCTURI + RentAllUtils.generateUrlSearchPartFromMap(paramString);
         HttpRequest req = new HttpRequest();
 
