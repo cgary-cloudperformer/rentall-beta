@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>apxGenerateUuid</name>
+        <label>Generate UUID</label>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
+        <actionName>GenerateUuidAction</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>dmlAccountUpdate</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>returnUuid</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>varUuid</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <decisions>
+        <description>Determine if Uuid is empty</description>
+        <name>IsUuidEmpty</name>
+        <label>Is UUID Empty</label>
+        <locationX>182</locationX>
+        <locationY>335</locationY>
+        <defaultConnectorLabel>UUID Not Empty</defaultConnectorLabel>
+        <rules>
+            <name>descUuidIsEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Uuid__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>apxGenerateUuid</targetReference>
+            </connector>
+            <label>UUID is Empty</label>
+        </rules>
+    </decisions>
+    <description>Account Insert Update Before - updates the UUID value if it is blank</description>
+    <environments>Default</environments>
+    <interviewLabel>Account Insert/Update Before {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account Insert/Update Before</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>dmlAccountUpdate</name>
+        <label>Update Account</label>
+        <locationX>50</locationX>
+        <locationY>575</locationY>
+        <inputAssignments>
+            <field>Uuid__c</field>
+            <value>
+                <elementReference>varUuid</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IsUuidEmpty</targetReference>
+        </connector>
+        <object>Account</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Universally Unique Identifier</description>
+        <name>varUuid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

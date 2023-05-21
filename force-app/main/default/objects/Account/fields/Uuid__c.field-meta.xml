@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Uuid__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Universally Unique Identifier. Automatically populated by an automated process. It can be used as a unique Identifier external to the Salesforce ID.</description>
+    <externalId>true</externalId>
+    <inlineHelpText>Universally Unique Identifier. Automatically populated by an automated process. It can be used as a unique Identifier external to the Salesforce ID.</inlineHelpText>
+    <label>UUID</label>
+    <length>36</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>

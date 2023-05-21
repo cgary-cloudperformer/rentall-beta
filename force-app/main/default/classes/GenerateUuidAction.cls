@@ -4,13 +4,15 @@
  * @group                       Actions
  */
 public class GenerateUuidAction {
-    @InvocableMethod( label='Generate UUID' description='Generates a Universally Unique Identifier' category='Utilities' )
-    public static List<String> generateValue(List<SObject> recList) {
-        List<String> retList = new List<String>();
-        for(SObject rec:recList){
-            Uuid uuidObj = new Uuid();
-            retList.add(uuidObj.getValue());
+    @InvocableMethod(label='UuidGenerator' description='Generates a Universally Unigue Identifier' category='Utilities')
+    public static List<String> getUuidForRecord(List<Boolean> returnUuid){
+        List<String> retValList = new List<String>();
+        for(Boolean boolVal:returnUuid){
+            if(boolVal){
+                Uuid uidSvc = new Uuid();
+                retValList.add(uidSvc.getValue());
+            }
         }
-        return retList;
+        return retValList;
     }
 }
