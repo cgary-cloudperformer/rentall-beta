@@ -20,18 +20,18 @@ public class BaconIpsum {
      */
     public static List<String> getRandomArrayOfSentences(Integer arrayLength){
         List<String> resArray = new List<String>();
-        wordLength = (wordLength == null) ? 200 : arrayLength;
+        Integer wordLength = (arrayLength == null) ? 200 : arrayLength;
         Map<String,String> paramMap = new Map<String,String>();
         paramMap.put('type',DEFAULTYPE);
-        paramMap.put('sentences',wordLength);
+        paramMap.put('sentences',String.valueOf(wordLength));
         paramMap.put('format','text');
         paramMap.put('start-with-lorem','1');
         String endpoint = RANDOMAPI + generateParamString(paramMap);
         HttpRequest req = new HttpRequest();
         req.setEndpoint(endpoint);
         req.setMethod('GET');
-        HttpResposne res = callApi(req);
-        resArray = resBody.split('.',res.getBody());
+        HttpResponse res = callApi(req);
+        resArray = res.getBody().split('.');
         return resArray;
     }
     
@@ -62,7 +62,7 @@ public class BaconIpsum {
         for(String key:paramMap.keySet()){
             paramPartArray.add(key + '=' + System.EncodingUtil.urlEncode(paramMap.get(key), 'UTF-8'));
         }
-        ret = '?' + String.joing(paramPartArray,'&');
+        ret = '?' + String.join(paramPartArray,'&');
         return ret;
     }
 
