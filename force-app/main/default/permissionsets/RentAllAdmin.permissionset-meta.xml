@@ -297,6 +297,11 @@
         <field>Rental__c.Street__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Rental__c.TotalRentalAmount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>RentAll Administrator</label>
     <objectPermissions>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <decisions>
+        <name>dscEndDateLaterThanRental</name>
+        <label>Is End Date Later Than Rental</label>
+        <locationX>182</locationX>
+        <locationY>623</locationY>
+        <defaultConnectorLabel>Do Nothing</defaultConnectorLabel>
+        <rules>
+            <name>outcomeUpdateRentalEndDate</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Rental__r.EndDate__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>$Record.EndDate__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updParentEndDate</targetReference>
+            </connector>
+            <label>Update Rental End Date</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Is the start date earlier than the parent rental?</description>
+        <name>dscStartDateEarlierThanParent</name>
+        <label>Is Start Date Earlier Than Rental</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>dscEndDateLaterThanRental</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Do Nothing</defaultConnectorLabel>
+        <rules>
+            <name>outcomeUpdateParent</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Rental__r.StartDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Record.StartDate__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updParentRental</targetReference>
+            </connector>
+            <label>Update Start Date</label>
+        </rules>
+    </decisions>
+    <description>Item Inventory Update/Insert After flow</description>
+    <environments>Default</environments>
+    <interviewLabel>Item Reservation Create/Update After Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Item Reservation Create/Update After Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Update the Parent Rental Record End Date</description>
+        <name>updParentEndDate</name>
+        <label>Update Parent Rental End Date</label>
+        <locationX>50</locationX>
+        <locationY>731</locationY>
+        <inputAssignments>
+            <field>EndDate__c</field>
+            <value>
+                <elementReference>$Record.EndDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Rental__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update the Parent Rental Record Start Date</description>
+        <name>updParentRental</name>
+        <label>Update Parent Rental Start Date</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>dscEndDateLaterThanRental</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>StartDate__c</field>
+            <value>
+                <elementReference>$Record.StartDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.Rental__r</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>dscStartDateEarlierThanParent</targetReference>
+        </connector>
+        <object>ItemReservation__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

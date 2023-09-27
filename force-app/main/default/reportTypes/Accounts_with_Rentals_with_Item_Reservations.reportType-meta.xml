@@ -377,6 +377,11 @@
             <field>Country__c</field>
             <table>Account.Rentals__r</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>TotalRentalAmount__c</field>
+            <table>Account.Rentals__r</table>
+        </columns>
         <masterLabel>Rentals</masterLabel>
     </sections>
     <sections>

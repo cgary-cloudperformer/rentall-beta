@@ -2,7 +2,7 @@ import { LightningElement, api, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
-import { getRecordCreateDefaults, generateRecordInputForCreate, getRecord, createRecord } from 'lightning/uiRecordApi';
+import { getRecordCreateDefaults, generateRecordInputForCreate, getRecord, createRecord, updateRecord } from 'lightning/uiRecordApi';
 import OBJ_ITEMRESERVATION from '@salesforce/schema/ItemReservation__c';
 import FIELD_NAME from '@salesforce/schema/ItemReservation__c.Name';
 import FIELD_PRODUCTNAME from '@salesforce/schema/ItemReservation__c.ProductName__c';
@@ -96,8 +96,19 @@ export default class AddEditRentalItems extends LightningElement {
     handleCellChange(evt){
         window.console.log('Cell Change Event: %s',JSON.stringify(evt.detail.draftValues,null,"\t"));
     }
+    handleRowAction(evt){
+        window.console.log('Row Action Data: %s',JSON.stringify(evt.detail,null,"\t"));
+        let actionName = evt.detail.action.name;
+        switch(actionName){
+            case 'delete':
+                this.removeItemReservation(evt.detail.row.Id);
+                break;
+            default:
+        }
+    }
     handleTableUpdateSave(evt){
         window.console.log('Table Save Event: %s',JSON.stringify(evt.detail.draftValues,null,"\t"));
+        this.updateItemReservations(evt.detail.draftValues);
     }
     /**
      * Component specific methods (non-handler)
@@ -117,6 +128,26 @@ export default class AddEditRentalItems extends LightningElement {
         let errorList = lookupCmp.errors;
         return errorList.length === 0 && formInputValidity;
     }
+    updateItemReservations(recordsToUpdate){
+        let promiseArray = [];
+        if(Array.isArray(recordsToUpdate) && recordsToUpdate.length > 0){
+            promiseArray = recordsToUpdate.map( element => {
+                let fields = Object.assign({},element);
+                let recordInfo = { fields };
+                return updateRecord(recordInfo);
+            });
+            Promise.all(promiseArray).then((updatedArray)=>{
+                return Promise.all([refreshApex(this.reservationItems),refreshApex(this.lineItemCount)]);
+            }).then(()=>{
+                let notificationEvt = new ShowToastEvent({'title':'Reservation Items Updated',
+                    'message':'Items have been updated on Rental.','variant':'success'});
+                this.dispatchEvent(notificationEvt);
+                this.template.querySelector('.itemReservationTable').draftValues = [];
+            }).catch((err)=>{
+                this.displayErrorMessage(err?.body?.message);
+            });
+        }
+    }
     removeItemReservation(reservationId){
         let reservationIdArray = [];
         reservationIdArray.push(reservationId);
@@ -126,9 +157,12 @@ export default class AddEditRentalItems extends LightningElement {
             let notificationEvt = new ShowToastEvent({'title':'Reservation Item Removed','message':`Reservation Item has been deleted`,'variant':'success'});
             this.dispatchEvent(notificationEvt);
         }).catch((err)=>{
-            let errEvt = new ShowToastEvent({'title':'Error Deleting Reservation Item','message':`Reservation Item could not be deleted: ${err.body.message}`,'variant':'error'});
-            this.dispatchEvent(errEvt);
+            this.displayErrorMessage(err?.body?.message);
         });
+    }
+    displayErrorMessage(errMess){
+        let errorEvt = new ShowToastEvent({'title':'Error','message':errMess,'variant':'error'});
+        this.dispatchEvent(errorEvt);
     }
     /**
      * Getters

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ItermReservation_EndDateAfterStartDate</fullName>
+    <active>true</active>
+    <description>The Item Reservation&apos;s End Date must be after the Start Date</description>
+    <errorConditionFormula>StartDate__c &gt;  EndDate__c</errorConditionFormula>
+    <errorMessage>The End Date must be after the Start Date</errorMessage>
+</ValidationRule>

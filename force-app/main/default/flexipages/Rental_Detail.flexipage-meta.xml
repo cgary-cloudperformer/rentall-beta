@@ -99,6 +99,16 @@
                 <identifier>RecordEndDate_cField</identifier>
             </fieldInstance>
         </itemInstances>
+        <itemInstances>
+            <fieldInstance>
+                <fieldInstanceProperties>
+                    <name>uiBehavior</name>
+                    <value>none</value>
+                </fieldInstanceProperties>
+                <fieldItem>Record.TotalRentalAmount__c</fieldItem>
+                <identifier>RecordTotalRentalAmount_cField</identifier>
+            </fieldInstance>
+        </itemInstances>
         <name>Facet-fd8fb666-57c2-4b12-b03e-730ef9988fd9</name>
         <type>Facet</type>
     </flexiPageRegions>
@@ -278,6 +288,10 @@
                     <value>Facet-a9a86350-7ccf-436e-91d9-1506b431fe36</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>label</name>
                     <value>Information</value>
                 </componentInstanceProperties>
@@ -292,6 +306,10 @@
                     <value>Facet-9a3da825-c34e-4aee-983c-39da66fcacdb</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
                     <name>label</name>
                     <value>Location Information</value>
                 </componentInstanceProperties>
@@ -304,6 +322,10 @@
                 <componentInstanceProperties>
                     <name>columns</name>
                     <value>Facet-db1f098e-baab-49e5-a7c1-bb03556666be</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>horizontalAlignment</name>
+                    <value>false</value>
                 </componentInstanceProperties>
                 <componentInstanceProperties>
                     <name>label</name>

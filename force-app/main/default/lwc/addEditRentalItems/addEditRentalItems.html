@@ -34,12 +34,14 @@
             </template>
             <h2 class="slds-text-heading_small slds-var-m-bottom_small">{label.reservationCount}: {reservationItemCount}</h2>
             <lightning-datatable 
+                class="itemReservationTable"
                 columns={tableColumns} 
                 hide-checkbox-column="true"
                 show-row-number-column="true"
                 data={reservationItems.data} 
                 key-field="Id"
                 oncellchange={handleCellChange}
+                onrowaction={handleRowAction}
                 onsave={handleTableUpdateSave}></lightning-datatable>
         </div>
     </lightning-card>
