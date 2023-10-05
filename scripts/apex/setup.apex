@@ -10,5 +10,5 @@
 /**************************************************************
  * Step 2 - Create Customer Accounts and Contacts
  **************************************************************/
-List<Account> res = DataStaging.createCustomerAccountsAndContacts(5, true);
-System.debug(LoggingLevel.INFO,'\n\n*****\nAccount List:\n' + JSON.serializePretty(res) + '\n*****\n\n');
+//List<Account> res = DataStaging.createCustomerAccountsAndContacts(5, true);
+//System.debug(LoggingLevel.INFO,'\n\n*****\nAccount List:\n' + JSON.serializePretty(res) + '\n*****\n\n');
