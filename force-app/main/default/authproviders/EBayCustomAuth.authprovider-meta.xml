@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
     <customMetadataTypeRecord>EBayAppCredential__mdt.EBayCustomAuth</customMetadataTypeRecord>
-    <executionUser>test-dd8vynk87rha@example.com</executionUser>
+    <executionUser>test-pipsibkzntln@example.com</executionUser>
     <friendlyName>EBayCustomAuth</friendlyName>
     <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
     <plugin>EbayAuthProviderPlugin</plugin>
