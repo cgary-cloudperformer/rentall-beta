@@ -1,0 +1,1278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Taxonomy API to discover which categories are available for that marketplace, then enable the seller or buyer to iterate through subsets of those categories, or to enter key words and phrases for category suggestions from eBay.</description>
+    <label>EBayTaxonomyAPISandbox</label>
+    <namedCredentialReference>EBayAPISandbox</namedCredentialReference>
+    <operations>
+        <active>true</active>
+        <name>fetchitemaspects</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getcategorysubtree</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getcategorysuggestions</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getcategorytree</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getcompatibilityproperties</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getcompatibilitypropertyvalues</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getdefaultcategorytreeid</name>
+    </operations>
+    <operations>
+        <active>true</active>
+        <name>getitemaspectsforcategory</name>
+    </operations>
+    <registrationProviderType>Custom</registrationProviderType>
+    <schema>{
+  &quot;openapi&quot;: &quot;3.0.0&quot;,
+  &quot;info&quot;: {
+    &quot;title&quot;: &quot;Taxonomy API&quot;,
+    &quot;description&quot;: &quot;Use the Taxonomy API to discover the most appropriate eBay categories under which sellers can offer inventory items for sale, and the most likely categories under which buyers can browse or search for items to purchase. In addition, the Taxonomy API provides metadata about the required and recommended category aspects to include in listings, and also has two operations to retrieve parts compatibility information.&quot;,
+    &quot;contact&quot;: {
+      &quot;name&quot;: &quot;eBay Inc,&quot;
+    },
+    &quot;license&quot;: {
+      &quot;name&quot;: &quot;eBay API License Agreement&quot;,
+      &quot;url&quot;: &quot;https://go.developer.ebay.com/api-license-agreement&quot;
+    },
+    &quot;version&quot;: &quot;v1.0.1&quot;
+  },
+  &quot;servers&quot;: [
+    {
+      &quot;url&quot;: &quot;https://api.ebay.com{basePath}&quot;,
+      &quot;description&quot;: &quot;Production&quot;,
+      &quot;variables&quot;: {
+        &quot;basePath&quot;: {
+          &quot;default&quot;: &quot;/commerce/taxonomy/v1&quot;
+        }
+      }
+    }
+  ],
+  &quot;paths&quot;: {
+    &quot;/category_tree/{category_tree_id}/fetch_item_aspects&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;summary&quot;: &quot;Get Aspects for All Leaf Categories in a Marketplace&quot;,
+        &quot;description&quot;: &quot;This method returns a complete list of aspects for all of the leaf categories that belong to an eBay marketplace. The eBay marketplace is specified through the &lt;b&gt;category_tree_id&lt;/b&gt; URI parameter.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; A successful call returns a payload as a gzipped JSON file sent as a binary file using the content-type:application/octet-stream in the response. This file may be large (over 100 MB, compressed). Extract the JSON file from the compressed file with a utility that handles .gz or .gzip. The open source &lt;a href=\&quot;https://github.com/eBay/taxonomy-sdk \&quot; target=\&quot;_blank\&quot;&gt;Taxonomy SDK&lt;/a&gt; can be used to compare the aspect metadata that is returned in this response. The &lt;b&gt;Taxonomy SDK&lt;/b&gt; uses this call to surface changes (new, modified, and removed entities) between an updated version of a bulk downloaded file relative to a previous version.&lt;/span&gt;&quot;,
+        &quot;operationId&quot;: &quot;fetchItemAspects&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;category_tree_id&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree. The category tree ID for an eBay marketplace can be retrieved using the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; method.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/GetCategoriesAspectResponse&quot;
+                }
+              }
+            }
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62004&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category tree ID was not found.&quot;
+                }
+              }
+            }
+          },
+          &quot;404&quot;: {
+            &quot;description&quot;: &quot;Not found&quot;
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;,
+              &quot;https://api.ebay.com/oauth/api_scope/metadata.insights&quot;
+            ]
+          }
+        ]
+      }
+    },
+    &quot;/get_default_category_tree_id&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;summary&quot;: &quot;Get a Default Category Tree ID&quot;,
+        &quot;description&quot;: &quot;A given eBay marketplace might use multiple category trees, but one of those trees is considered to be the default for that marketplace. This call retrieves a reference to the default category tree associated with the specified eBay marketplace ID. The response includes only the tree&apos;s unique identifier and version, which you can use to retrieve more details about the tree, its structure, and its individual category nodes.&quot;,
+        &quot;operationId&quot;: &quot;getDefaultCategoryTreeId&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;marketplace_id&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay marketplace for which the category tree ID is requested. For a list of supported marketplace IDs, see &lt;a href=\&quot;/api-docs/commerce/taxonomy/static/supportedmarketplaces.html\&quot;&gt;Marketplaces with Default Category Trees&lt;/a&gt;.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/BaseCategoryTree&quot;
+                }
+              }
+            }
+          },
+          &quot;204&quot;: {
+            &quot;description&quot;: &quot;No content&quot;
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62002&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;Missing marketplace ID.&quot;
+                },
+                &quot;62003&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified marketplace ID was not found.&quot;
+                }
+              }
+            }
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;
+            ]
+          }
+        ]
+      }
+    },
+    &quot;/category_tree/{category_tree_id}&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;summary&quot;: &quot;Get a Category Tree&quot;,
+        &quot;description&quot;: &quot;This method retrieves the complete category tree that is identified by the &lt;b&gt;category_tree_id&lt;/b&gt; parameter. The value of &lt;b&gt;category_tree_id&lt;/b&gt; was returned by the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; method in the &lt;b&gt;categoryTreeId&lt;/b&gt; field. The response contains details of all nodes of the specified eBay category tree, as well as the eBay marketplaces that use this category tree.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; This method can return a very large payload, so gzip compression is supported. To enable gzip compression, include the &lt;code&gt;Accept-Encoding&lt;/code&gt; header and set its value to &lt;code&gt;gzip&lt;/code&gt; as shown below: &lt;br&gt;&lt;br&gt;&lt;code&gt;&amp;nbsp;&amp;nbsp;Accept-Encoding: gzip&lt;/code&gt;&lt;/span&gt;&quot;,
+        &quot;operationId&quot;: &quot;getCategoryTree&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;category_tree_id&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree. The category tree ID for an eBay marketplace can be retrieved using the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; method.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;Accept-Encoding&quot;,
+            &quot;in&quot;: &quot;header&quot;,
+            &quot;description&quot;: &quot;This header indicates the compression-encoding algorithms the client accepts for the response. This value should be set to &lt;code&gt;gzip&lt;/code&gt;. &lt;br&gt;&lt;br&gt; For more information, refer to &lt;a href=\&quot;/api-docs/static/rest-request-components.html#HTTP\&quot; target=\&quot;_blank \&quot;&gt;HTTP request headers&lt;/a&gt;.&quot;,
+            &quot;required&quot;: false,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/CategoryTree&quot;
+                }
+              }
+            }
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62004&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category tree ID was not found.&quot;
+                }
+              }
+            }
+          },
+          &quot;404&quot;: {
+            &quot;description&quot;: &quot;Not Found&quot;
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;
+            ]
+          }
+        ]
+      }
+    },
+    &quot;/category_tree/{category_tree_id}/get_category_subtree&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;summary&quot;: &quot;Get a Category Subtree&quot;,
+        &quot;description&quot;: &quot;This call retrieves the details of all nodes of the category tree hierarchy (the subtree) below a specified category of a category tree. You identify the tree using the &lt;b&gt;category_tree_id&lt;/b&gt; parameter, which was returned by the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; call in the &lt;b&gt;categoryTreeId&lt;/b&gt; field.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; This method can return a very large payload, so gzip compression is supported. To enable gzip compression, include the &lt;code&gt;Accept-Encoding&lt;/code&gt; header and set its value to &lt;code&gt;gzip&lt;/code&gt; as shown below: &lt;br&gt;&lt;br&gt;&lt;code&gt;&amp;nbsp;&amp;nbsp;Accept-Encoding: gzip&lt;/code&gt;&lt;/span&gt;&quot;,
+        &quot;operationId&quot;: &quot;getCategorySubtree&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;category_id&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the category at the top of the subtree being requested. Metadata on this category and all its descendant categories are retrieved.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt;&lt;strong&gt;Note:&lt;/strong&gt; If the &lt;b&gt;category_id&lt;/b&gt; submitted identifies a leaf node of the tree, the call response will contain information about only that leaf node, which is a valid subtree.&lt;!-- &lt;br&gt;&lt;br&gt; This call also returns an error if &lt;b&gt;category_id&lt;/b&gt; identifies a deprecated category. This can occur if you routinely cache your category trees. Use the &lt;b&gt;Get Deprecated Categories and Mapping&lt;/b&gt; call to determine which current category should be used in place of the deprecated category, and use the &lt;b&gt;getCategoryTree&lt;/b&gt; call to update your cached copy of the tree. --&gt; &lt;/span&gt;&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;category_tree_id&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree. The category tree ID for an eBay marketplace can be retrieved using the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; method.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;Accept-Encoding&quot;,
+            &quot;in&quot;: &quot;header&quot;,
+            &quot;description&quot;: &quot;This header indicates the compression-encoding algorithms the client accepts for the response. This value should be set to &lt;code&gt;gzip&lt;/code&gt;. &lt;br&gt;&lt;br&gt; For more information, refer to &lt;a href=\&quot;/api-docs/static/rest-request-components.html#HTTP\&quot; target=\&quot;_blank \&quot;&gt;HTTP request headers&lt;/a&gt;.&quot;,
+            &quot;required&quot;: false,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/CategorySubtree&quot;
+                }
+              }
+            }
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62004&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category tree ID was not found.&quot;
+                },
+                &quot;62005&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category ID does not belong to the specified category tree.&quot;
+                },
+                &quot;62006&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;Missing category ID.&quot;
+                },
+                &quot;62008&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category ID is the root for the category tree. Please use &lt;code&gt;{categoryTreeHref}&lt;/code&gt; to retrieve the entire tree.&quot;
+                }
+              }
+            }
+          },
+          &quot;404&quot;: {
+            &quot;description&quot;: &quot;Not Found&quot;
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;
+            ]
+          }
+        ]
+      }
+    },
+    &quot;/category_tree/{category_tree_id}/get_category_suggestions&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;summary&quot;: &quot;Get Suggested Categories&quot;,
+        &quot;description&quot;: &quot;This call returns an array of category tree leaf nodes in the specified category tree that are considered by eBay to most closely correspond to the query string &lt;b&gt;q&lt;/b&gt;. Returned with each suggested node is a localized name for that category (based on the &lt;b&gt;Accept-Language&lt;/b&gt; header specified for the call), and details about each of the category&apos;s ancestor nodes, extending from its immediate parent up to the root of the category tree.&lt;br&gt;&lt;br&gt;You identify the tree using the &lt;b&gt;category_tree_id&lt;/b&gt; parameter, which was returned by the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; call in the &lt;b&gt;categoryTreeId&lt;/b&gt; field.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;&lt;span style=\&quot;color:red\&quot;&gt;Important:&lt;/span&gt;&lt;/strong&gt; This call is not supported in the Sandbox environment. It will return a response payload in which the &lt;b&gt;categoryName&lt;/b&gt; fields contain random or boilerplate text regardless of the query submitted.&lt;/span&gt;&quot;,
+        &quot;operationId&quot;: &quot;getCategorySuggestions&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;category_tree_id&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree. The category tree ID for an eBay marketplace can be retrieved using the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; method.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;q&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;A quoted string that describes or characterizes the item being offered for sale. The string format is free form, and can contain any combination of phrases or keywords. eBay will parse the string and return suggested categories for the item.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/CategorySuggestionResponse&quot;
+                }
+              }
+            }
+          },
+          &quot;204&quot;: {
+            &quot;description&quot;: &quot;No content&quot;
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62004&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category tree ID was not found.&quot;
+                },
+                &quot;62007&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;Missing keyword &apos;q&apos;. Please specify a valid set of keywords that best describes your item.&quot;
+                }
+              }
+            }
+          },
+          &quot;404&quot;: {
+            &quot;description&quot;: &quot;Not found&quot;
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;
+            ]
+          }
+        ]
+      }
+    },
+    &quot;/category_tree/{category_tree_id}/get_item_aspects_for_category&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;description&quot;: &quot;This call returns a list of &lt;i&gt;aspects&lt;/i&gt; that are appropriate or necessary for accurately describing items in the specified leaf category. Each aspect identifies an item attribute (for example, color,) for which the seller will be required or encouraged to provide a value (or variation values) when offering an item in that category on eBay.&lt;br&gt;&lt;br&gt;For each aspect, &lt;b&gt;getItemAspectsForCategory&lt;/b&gt; provides complete metadata, including: &lt;ul&gt;&lt;li&gt;The aspect&apos;s data type, format, and entry mode&lt;/li&gt;&lt;li&gt;Whether the aspect is required in listings&lt;/li&gt;&lt;li&gt;Whether the aspect can be used for item variations&lt;/li&gt;&lt;li&gt;Whether the aspect accepts multiple values for an item&lt;/li&gt;&lt;li&gt;Allowed values for the aspect&lt;/li&gt;&lt;/ul&gt; Use this information to construct an interface through which sellers can enter or select the appropriate values for their items or item variations. Once you collect those values, include them as product aspects when creating inventory items using the Inventory API.&quot;,
+        &quot;operationId&quot;: &quot;getItemAspectsForCategory&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;category_id&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the leaf category for which aspects are being requested.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; If the &lt;b&gt;category_id&lt;/b&gt; submitted does not identify a leaf node of the tree, this call returns an error. &lt;/span&gt;&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;category_tree_id&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree. The category tree ID for an eBay marketplace can be retrieved using the &lt;b&gt;getDefaultCategoryTreeId&lt;/b&gt; method.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/AspectMetadata&quot;
+                }
+              }
+            }
+          },
+          &quot;204&quot;: {
+            &quot;description&quot;: &quot;No Content&quot;
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62004&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category tree ID was not found.&quot;
+                },
+                &quot;62005&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category ID does not belong to specified category tree.&quot;
+                },
+                &quot;62006&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;Missing category ID.&quot;
+                },
+                &quot;62008&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category ID is the root for the category tree.&quot;
+                },
+                &quot;62009&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category ID must be a leaf category.&quot;
+                }
+              }
+            }
+          },
+          &quot;404&quot;: {
+            &quot;description&quot;: &quot;Not found&quot;
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;,
+              &quot;https://api.ebay.com/oauth/api_scope/metadata.insights&quot;
+            ]
+          }
+        ]
+      }
+    },
+    &quot;/category_tree/{category_tree_id}/get_compatibility_properties&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;summary&quot;: &quot;Get Compatibility Properties&quot;,
+        &quot;description&quot;: &quot;This call retrieves the compatible vehicle aspects that are used to define a motor vehicle that is compatible with a motor vehicle part or accessory. The values that are retrieved here might include motor vehicle aspects such as &apos;Make&apos;, &apos;Model&apos;, &apos;Year&apos;, &apos;Engine&apos;, and &apos;Trim&apos;, and each of these aspects are localized for the eBay marketplace.&lt;br&gt;&lt;br&gt; The &lt;strong&gt;category_tree_id&lt;/strong&gt; value is passed in as a path parameter, and this value identifies the eBay category tree. The &lt;strong&gt;category_id&lt;/strong&gt; value is passed in as a query parameter, as this parameter is also required. The specified category must be a category that supports parts compatibility.&lt;br&gt;&lt;br&gt; At this time, this operation only supports parts and accessories listings for cars, trucks, and motorcycles (not boats, power sports, or any other vehicle types). Only the following eBay marketplaces support parts compatibility:&lt;ul&gt;&lt;li&gt;eBay US (Motors and non-Motors categories)&lt;/li&gt;&lt;li&gt;eBay Canada (Motors and non-Motors categories)&lt;/li&gt;&lt;li&gt;eBay UK&lt;/li&gt;&lt;li&gt;eBay Germany&lt;/li&gt;&lt;li&gt;eBay Australia&lt;/li&gt;&lt;li&gt;eBay France&lt;/li&gt;&lt;li&gt;eBay Italy&lt;/li&gt;&lt;li&gt;eBay Spain&lt;/li&gt;&lt;/ul&gt;&quot;,
+        &quot;operationId&quot;: &quot;getCompatibilityProperties&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;category_tree_id&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;This is the unique identifier of category tree. The following is the list of &lt;strong&gt;category_tree_id&lt;/strong&gt; values and the eBay marketplaces that they represent. One of these ID values must be passed in as a path parameter, and the &lt;strong&gt;category_id&lt;/strong&gt; value, that is passed in as query parameter, must be a valid eBay category on that eBay marketplace that supports parts compatibility for cars, trucks, or motorcycles.&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;eBay US: 0&lt;/li&gt;&lt;li&gt;eBay Motors US: 100&lt;/li&gt;&lt;li&gt;eBay Canada: 2&lt;/li&gt;&lt;li&gt;eBay UK: 3&lt;/li&gt;&lt;li&gt;eBay Germany: 77&lt;/li&gt;&lt;li&gt;eBay Australia: 15&lt;/li&gt;&lt;li&gt;eBay France: 71&lt;/li&gt;&lt;li&gt;eBay Italy: 101&lt;/li&gt;&lt;li&gt;eBay Spain: 186&lt;/li&gt;&lt;/ul&gt;&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;category_id&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The unique identifier of an eBay category. This eBay category must be a valid eBay category on the specified eBay marketplace, and the category must support parts compatibility for cars, trucks, or motorcycles.&lt;br&gt;&lt;br&gt; The &lt;b&gt;getAutomotivePartsCompatibilityPolicies&lt;/b&gt; method of the Selling Metadata API can be used to retrieve all eBay categories for an eBay marketplace that support parts compatibility for vehicles.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/GetCompatibilityMetadataResponse&quot;
+                }
+              }
+            }
+          },
+          &quot;204&quot;: {
+            &quot;description&quot;: &quot;No content&quot;
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62004&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category tree ID was not found.&quot;
+                },
+                &quot;62005&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category ID does not belong to specified category tree.&quot;
+                },
+                &quot;62006&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;Missing category ID.&quot;
+                },
+                &quot;62101&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;This category ID is disabled for parts compatibility.&quot;
+                },
+                &quot;62103&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The CategoryTreeId is not supported.&quot;
+                }
+              }
+            }
+          },
+          &quot;404&quot;: {
+            &quot;description&quot;: &quot;Not found&quot;
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;
+            ]
+          }
+        ]
+      }
+    },
+    &quot;/category_tree/{category_tree_id}/get_compatibility_property_values&quot;: {
+      &quot;get&quot;: {
+        &quot;tags&quot;: [
+          &quot;category_tree&quot;
+        ],
+        &quot;summary&quot;: &quot;Get Compatibility Property Values&quot;,
+        &quot;description&quot;: &quot;This call retrieves applicable compatible vehicle property values based on the specified eBay marketplace, specified eBay category, and filters used in the request. Compatible vehicle properties are returned in the &lt;strong&gt;compatibilityProperties.name&lt;/strong&gt; field of a &lt;strong&gt;getCompatibilityProperties&lt;/strong&gt; response. &lt;br&gt;&lt;br&gt; One compatible vehicle property applicable to the specified eBay marketplace and eBay category is specified through the required &lt;strong&gt;compatibility_property&lt;/strong&gt; filter. Then, the user has the option of further restricting the compatible vehicle property values that are returned in the response by specifying one or more compatible vehicle property name/value pairs through the &lt;strong&gt;filter&lt;/strong&gt; query parameter.&lt;br&gt;&lt;br&gt;See the documentation in &lt;strong&gt;URI parameters&lt;/strong&gt; section for more information on using the &lt;strong&gt;compatibility_property&lt;/strong&gt; and &lt;strong&gt;filter&lt;/strong&gt; query parameters together to customize the data that is retrieved.&quot;,
+        &quot;operationId&quot;: &quot;getCompatibilityPropertyValues&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;category_tree_id&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;description&quot;: &quot;This is the unique identifier of the category tree. The following is the list of &lt;strong&gt;category_tree_id&lt;/strong&gt; values and the eBay marketplaces that they represent. One of these ID values must be passed in as a path parameter, and the &lt;strong&gt;category_id&lt;/strong&gt; value, that is passed in as query parameter, must be a valid eBay category on that eBay marketplace that supports parts compatibility for cars, trucks, or motorcycles.&lt;br&gt;&lt;br&gt;&lt;ul&gt;&lt;li&gt;eBay US: 0&lt;/li&gt;&lt;li&gt;eBay Motors US: 100&lt;/li&gt;&lt;li&gt;eBay Canada: 2&lt;/li&gt;&lt;li&gt;eBay UK: 3&lt;/li&gt;&lt;li&gt;eBay Germany: 77&lt;/li&gt;&lt;li&gt;eBay Australia: 15&lt;/li&gt;&lt;li&gt;eBay France: 71&lt;/li&gt;&lt;li&gt;eBay Italy: 101&lt;/li&gt;&lt;li&gt;eBay Spain: 186&lt;/li&gt;&lt;/ul&gt;&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;compatibility_property&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;One compatible vehicle property applicable to the specified eBay marketplace and eBay category is specified in this required filter. Compatible vehicle properties are returned in the &lt;strong&gt;compatibilityProperties.name&lt;/strong&gt; field of a &lt;strong&gt;getCompatibilityProperties&lt;/strong&gt; response. &lt;br&gt;&lt;br&gt; For example, if you wanted to retrieve all vehicle trims for a 2018 Toyota Camry, you would set this filter as follows: &lt;code&gt;compatibility_property=Trim&lt;/code&gt; and then include the following three name/value filters through one &lt;strong&gt;filter&lt;/strong&gt; parameter: &lt;code&gt;filter=Year:2018,Make:Toyota,Model:Camry&lt;/code&gt;.&lt;br&gt;&lt;br&gt;So, putting this all together, the URI would look something like this:&lt;br&gt;&lt;br&gt;&lt;pre&gt;&lt;code&gt;GET https://api.ebay.com/commerce/&lt;br&gt;taxonomy/v1/category_tree/100/&lt;br&gt;get_compatibility_property_values?&lt;br&gt;&lt;strong&gt;category_id&lt;/strong&gt;=6016&amp;&lt;strong&gt;compatibility_property&lt;/strong&gt;=Trim&lt;br&gt;&amp;&lt;strong&gt;filter&lt;/strong&gt;=Year:2018,Make:Toyota,Model:Camry&lt;/code&gt;&lt;/pre&gt;&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;category_id&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;The unique identifier of an eBay category. This eBay category must be a valid eBay category on the specified eBay marketplace, and the category must support parts compatibility for cars, trucks, or motorcycles.&lt;br&gt;&lt;br&gt; The &lt;strong&gt;getAutomotivePartsCompatibilityPolicies&lt;/strong&gt; method of the Selling Metadata API can be used to retrieve all eBay categories for an eBay marketplace that support parts compatibility for vehicles.&quot;,
+            &quot;required&quot;: true,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          {
+            &quot;name&quot;: &quot;filter&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;description&quot;: &quot;One or more compatible vehicle property name/value pairs are passed in through this query parameter. The compatible vehicle property name and corresponding value are delimited with a colon (:), such as &lt;code&gt;filter=Year:2018&lt;/code&gt;, and multiple compatible vehicle property name/value pairs are delimited with a comma (,).&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt;&lt;b&gt;Note:&lt;/b&gt; Commas are used as delimiters between filter values. If a value includes a comma (e.g., &lt;code&gt;BodyStyle:AWD B9 8W5&lt;b&gt;,&lt;/b&gt;C8WD&lt;/code&gt;) you &lt;b&gt;must&lt;/b&gt; include a backslash (&lt;b&gt;\\&lt;/b&gt;) immediately before the comma to prevent it from being evaluated as a delimiter.&lt;br&gt;&lt;br&gt;As with all query parameter values, the filter parameters must be URL encoded. For more information about encoding request parameters, refer to &lt;a href=\&quot;/api-docs/static/rest-request-components.html#parameters\&quot; target=\&quot;_blank\&quot;&gt;URL encoding query parameter values&lt;/a&gt;.&lt;/span&gt;&lt;br&gt;For example, to retrieve all vehicle trims for a 2022 Audi A4:&lt;ul&gt;&lt;li&gt;Set the &lt;strong&gt;compatibility_property&lt;/strong&gt; filter to &lt;code&gt;compatibility_property=Trim&lt;/code&gt;&lt;/li&gt;&lt;li&gt;Include the following name/value filters using one &lt;strong&gt;filter&lt;/strong&gt; parameter:&lt;ul&gt;&lt;li&gt;&lt;code&gt;Year:2022&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;Make:Audi&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;Model:A4&lt;/code&gt;&lt;/li&gt;&lt;li&gt;&lt;code&gt;BodyStyle:AWD B9 8W5\\,8WD&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/li&gt;&lt;/ul&gt;The resulting comma-separated filter query parameter is:&lt;pre&gt;&lt;code&gt;filter=Year:2022,Make:Audi,Model:A4,BodyStyle:AWD B9 8W5\\,8WD&lt;/code&gt;&lt;/pre&gt;&lt;br&gt;The following sample shows the same filter but with URL encoding for the blank spaces.&lt;br&gt;&lt;pre&gt;&lt;code&gt;GET https://api.ebay.com/commerce/&lt;br&gt;taxonomy/v1/category_tree/100/&lt;br&gt;get_compatibility_property_values?&lt;b&gt;category_id&lt;/b&gt;=6016&amp;&lt;b&gt;compatibility_property&lt;/b&gt;=Trim&amp;&lt;b&gt;filter&lt;/b&gt;=Year:2022,Make:Audi,Model:A4,BodyStyle:AWD%20B9%208W5%5C%2C8WD&lt;/code&gt;&lt;/pre&gt; For implementation help, refer to eBay API documentation at https://developer.ebay.com/api-docs/commerce/taxonomy/types/txn:ConstraintFilter&quot;,
+            &quot;required&quot;: false,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;200&quot;: {
+            &quot;description&quot;: &quot;Success&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;$ref&quot;: &quot;#/components/schemas/GetCompatibilityPropertyValuesResponse&quot;
+                }
+              }
+            }
+          },
+          &quot;204&quot;: {
+            &quot;description&quot;: &quot;No content&quot;
+          },
+          &quot;400&quot;: {
+            &quot;description&quot;: &quot;Bad Request&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62004&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category tree ID was not found.&quot;
+                },
+                &quot;62005&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The specified category ID does not belong to specified category tree.&quot;
+                },
+                &quot;62006&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;Missing category ID.&quot;
+                },
+                &quot;62100&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The filter format is invalid. For more information, see the API call reference documentation.&quot;
+                },
+                &quot;62101&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;This category ID is disabled for parts compatibility.&quot;
+                },
+                &quot;62102&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The compatibility property is invalid.&quot;
+                },
+                &quot;62103&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;The CategoryTreeId is not supported.&quot;
+                },
+                &quot;62104&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;REQUEST&quot;,
+                  &quot;description&quot;: &quot;Missing compatibility property.&quot;
+                }
+              }
+            }
+          },
+          &quot;404&quot;: {
+            &quot;description&quot;: &quot;Not found&quot;
+          },
+          &quot;500&quot;: {
+            &quot;description&quot;: &quot;Internal Server Error&quot;,
+            &quot;x-response-codes&quot;: {
+              &quot;errors&quot;: {
+                &quot;62000&quot;: {
+                  &quot;domain&quot;: &quot;API_TAXONOMY&quot;,
+                  &quot;category&quot;: &quot;APPLICATION&quot;,
+                  &quot;description&quot;: &quot;There was a problem with an eBay internal system or process. Contact eBay developer support for assistance.&quot;
+                }
+              }
+            }
+          }
+        },
+        &quot;security&quot;: [
+          {
+            &quot;api_auth&quot;: [
+              &quot;https://api.ebay.com/oauth/api_scope&quot;
+            ]
+          }
+        ]
+      }
+    }
+  },
+  &quot;components&quot;: {
+    &quot;schemas&quot;: {
+      &quot;AncestorReference&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;categoryId&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay ancestor category.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The root node of a full default category tree includes the &lt;b&gt;categoryId&lt;/b&gt; field, but its value should not be relied upon. It provides no useful information for application development.&lt;/span&gt;&quot;
+          },
+          &quot;categoryName&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The name of the ancestor category identified by &lt;b&gt;categoryId&lt;/b&gt;.&quot;
+          },
+          &quot;categorySubtreeNodeHref&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The href portion of the &lt;b&gt;getCategorySubtree&lt;/b&gt; call that retrieves the subtree below the ancestor category node.&quot;
+          },
+          &quot;categoryTreeNodeLevel&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;description&quot;: &quot;The absolute level of the ancestor category node in the hierarchy of its category tree.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The root node of any full category tree is always at level &lt;code&gt;&lt;b&gt;0&lt;/b&gt;&lt;/code&gt;. &lt;/span&gt;&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about one of the ancestors of a suggested category. An ordered list of these references describes the path from the suggested category to the root of the category tree it belongs to.&quot;
+      },
+      &quot;Aspect&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;aspectConstraint&quot;: {
+            &quot;description&quot;: &quot;Information about the formatting, occurrence, and support of this aspect.&quot;,
+            &quot;$ref&quot;: &quot;#/components/schemas/AspectConstraint&quot;
+          },
+          &quot;aspectValues&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;A list of valid values for this aspect (for example: &lt;code&gt;Red&lt;/code&gt;, &lt;code&gt;Green&lt;/code&gt;, and &lt;code&gt;Blue&lt;/code&gt;), along with any constraints on those values.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/AspectValue&quot;
+            }
+          },
+          &quot;localizedAspectName&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The localized name of this aspect (for example: &lt;code&gt;Colour&lt;/code&gt; on the eBay UK site). &lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; This name is always localized for the specified marketplace. &lt;/span&gt;&quot;
+          },
+          &quot;relevanceIndicator&quot;: {
+            &quot;description&quot;: &quot;The relevance of this aspect. This field is returned if eBay has data on how many searches have been performed for listings in the category using this item aspect.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; This container is restricted to applications that have been granted permission to access this feature. You must submit an &lt;a href=\&quot;https://developer.ebay.com/my/support/tickets?tab=app-check \&quot;&gt;App Check ticket&lt;/a&gt; to request this access. In the App Check form, add a note to the &lt;b&gt;Application Title/Summary&lt;/b&gt; and/or &lt;b&gt;Application Details&lt;/b&gt; fields that you want access to &apos;Buyer Demand Data&apos; in the Taxonomy API.&lt;/span&gt;&quot;,
+            &quot;$ref&quot;: &quot;#/components/schemas/RelevanceIndicator&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about an item attribute (for example, color) that is appropriate or necessary for accurately describing items in a particular leaf category. Sellers are required or encouraged to provide one or more values of this aspect when offering an item in that category on eBay.&quot;
+      },
+      &quot;AspectConstraint&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;aspectApplicableTo&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;This value indicate if the aspect identified by the &lt;b&gt;aspects.localizedAspectName&lt;/b&gt; field is a product aspect (relevant to catalog products in the category) or an item/instance aspect, which is an aspect whose value will vary based on a particular instance of the product.&quot;,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;string&quot;,
+              &quot;description&quot;: &quot; For implementation help, refer to &lt;a href=&apos;https://developer.ebay.com/api-docs/commerce/taxonomy/types/txn:AspectApplicableToEnum&apos;&gt;eBay API documentation&lt;/a&gt;&quot;
+            }
+          },
+          &quot;aspectDataType&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The data type of this aspect. For implementation help, refer to &lt;a href=&apos;https://developer.ebay.com/api-docs/commerce/taxonomy/types/txn:AspectDataTypeEnum&apos;&gt;eBay API documentation&lt;/a&gt;&quot;
+          },
+          &quot;aspectEnabledForVariations&quot;: {
+            &quot;type&quot;: &quot;boolean&quot;,
+            &quot;description&quot;: &quot;A value of &lt;code&gt;true&lt;/code&gt; indicates that this aspect can be used to help identify item variations.&quot;
+          },
+          &quot;aspectFormat&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;&lt;i&gt;Returned only if&lt;/i&gt; the value of &lt;b&gt;aspectDataType&lt;/b&gt; identifies a data type that requires specific formatting. Currently, this field provides formatting hints as follows: &lt;ul&gt; &lt;li&gt;&lt;b&gt;DATE&lt;/b&gt;: &lt;code&gt;YYYY&lt;/code&gt;, &lt;code&gt;YYYYMM&lt;/code&gt;, &lt;code&gt;YYYYMMDD&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;b&gt;NUMBER&lt;/b&gt;: &lt;code&gt;int32&lt;/code&gt;, &lt;code&gt;double&lt;/code&gt;&lt;/li&gt; &lt;/ul&gt;&quot;
+          },
+          &quot;aspectMaxLength&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;description&quot;: &quot;The maximum length of the item/instance aspect&apos;s value. The seller must make sure not to exceed this length when specifying the instance aspect&apos;s value for a product. This field is only returned for instance aspects.&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          },
+          &quot;aspectMode&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The manner in which values of this aspect must be specified by the seller (as free text or by selecting from available options).  For implementation help, refer to &lt;a href=&apos;https://developer.ebay.com/api-docs/commerce/taxonomy/types/txn:AspectModeEnum&apos;&gt;eBay API documentation&lt;/a&gt;&quot;
+          },
+          &quot;aspectRequired&quot;: {
+            &quot;type&quot;: &quot;boolean&quot;,
+            &quot;description&quot;: &quot;A value of &lt;code&gt;true&lt;/code&gt; indicates that this aspect is required when offering items in the specified category.&quot;
+          },
+          &quot;aspectUsage&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The enumeration value returned in this field will indicate if the corresponding aspect is recommended or optional.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; This field is always returned, even for hard-mandated/required aspects (where &lt;code&gt;&lt;strong&gt;aspectRequired&lt;/strong&gt;: true&lt;/code&gt;). The value returned for required aspects will be &lt;code&gt;RECOMMENDED&lt;/code&gt;, but they are actually required and a seller will be blocked from listing or revising an item without these aspects. &lt;/span&gt; For implementation help, refer to &lt;a href=&apos;https://developer.ebay.com/api-docs/commerce/taxonomy/types/txn:AspectUsageEnum&apos;&gt;eBay API documentation&lt;/a&gt;&quot;
+          },
+          &quot;expectedRequiredByDate&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The expected date after which the aspect will be required.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The value returned in this field specifies only an approximate date, which may not reflect the actual date after which the aspect is required.&lt;/span&gt;&quot;
+          },
+          &quot;itemToAspectCardinality&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Indicates whether this aspect can accept single or multiple values for items in the specified category.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; Up to 30 values can be supplied for aspects that accept multiple values.&lt;/span&gt; For implementation help, refer to &lt;a href=&apos;https://developer.ebay.com/api-docs/commerce/taxonomy/types/txn:ItemToAspectCardinalityEnum&apos;&gt;eBay API documentation&lt;/a&gt;&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about the formatting, occurrence, and support of an aspect.&quot;
+      },
+      &quot;AspectMetadata&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;aspects&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;A list of item aspects (for example, color) that are appropriate or necessary for accurately describing items in a particular leaf category. Each category has a different set of aspects and different requirements for aspect values. Sellers are required or encouraged to provide one or more acceptable values for each aspect when offering an item in that category on eBay.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/Aspect&quot;
+            }
+          }
+        },
+        &quot;description&quot;: &quot;This type is the container type for the response payload of the &lt;b&gt;getItemAspectsForCategory&lt;/b&gt; call.&quot;
+      },
+      &quot;AspectValue&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;localizedValue&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The localized value of this aspect.&lt;br&gt;&lt;br&gt;          &lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; This value is always localized for the specified marketplace. &lt;/span&gt;&quot;
+          },
+          &quot;valueConstraints&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;&lt;i&gt;Not returned if&lt;/i&gt; the value of the &lt;b&gt;localizedValue&lt;/b&gt; field can always be selected for this aspect of the specified category.&lt;br&gt;&lt;br&gt;Contains a list of the dependencies that identify when the value of the &lt;b&gt;localizedValue&lt;/b&gt; field is available for the current aspect. Each dependency specifies the values of another aspect of the same category (a &lt;i&gt;control&lt;/i&gt; aspect), for which the current value of the current aspect can also be selected by the seller. &lt;br&gt;&lt;br&gt;          &lt;b&gt;Example:&lt;/b&gt; A shirt is available in three sizes and three colors, but only the Small and Medium sizes come in Green. Thus for the Color aspect, the value Green is constrained by its dependency on Size (the control aspect). Only when the Size aspect value is Small or Medium, can the Color aspect value of Green be selected by the seller.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/ValueConstraint&quot;
+            }
+          }
+        },
+        &quot;description&quot;: &quot;This type contains a valid value for an aspect, along with any constraints on the occurrence of that value.&quot;
+      },
+      &quot;BaseCategoryTree&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;categoryTreeId&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree for the specified marketplace.&quot;
+          },
+          &quot;categoryTreeVersion&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The version of the category tree identified by &lt;b&gt;categoryTreeId&lt;/b&gt;. It&apos;s a good idea to cache this value for comparison so you can determine if this category tree has been modified in subsequent calls.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains identifying information for the category tree associated with a particular eBay marketplace.&quot;
+      },
+      &quot;Category&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;categoryId&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category within its category tree.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The root node of a full default category tree includes the &lt;b&gt;categoryId&lt;/b&gt; field, but its value should not be relied upon. It provides no useful information for application development. &lt;/span&gt;&quot;
+          },
+          &quot;categoryName&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The name of the category identified by &lt;b&gt;categoryId&lt;/b&gt;.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about a particular eBay category.&quot;
+      },
+      &quot;CategoryAspect&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;category&quot;: {
+            &quot;description&quot;: &quot;The details that are appropriate or necessary to accurately define the category.&quot;,
+            &quot;$ref&quot;: &quot;#/components/schemas/Category&quot;
+          },
+          &quot;aspects&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;A list of aspect metadata that is used to describe the items in a particular leaf category.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/Aspect&quot;
+            }
+          }
+        }
+      },
+      &quot;CategorySubtree&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;categorySubtreeNode&quot;: {
+            &quot;description&quot;: &quot;Contains details of all nodes of the category subtree hierarchy below a specified node. This is a recursive structure.&quot;,
+            &quot;$ref&quot;: &quot;#/components/schemas/CategoryTreeNode&quot;
+          },
+          &quot;categoryTreeId&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree to which this subtree belongs.&quot;
+          },
+          &quot;categoryTreeVersion&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The version of the category tree identified by &lt;b&gt;categoryTreeId&lt;/b&gt;. It&apos;s a good idea to cache this value for comparison so you can determine if this category tree has been modified in subsequent calls.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about a particular subtree of a specified eBay category tree. A category subtree consists of a non-root node of the category tree, and all of its descendants down to the leaf nodes.&quot;
+      },
+      &quot;CategorySuggestion&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;category&quot;: {
+            &quot;description&quot;: &quot;Contains details about the suggested category.&quot;,
+            &quot;$ref&quot;: &quot;#/components/schemas/Category&quot;
+          },
+          &quot;categoryTreeNodeAncestors&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;An ordered list of category references that describes the location of the suggested category in the specified category tree. The list identifies the category&apos;s ancestry as a sequence of parent nodes, from the current node&apos;s immediate parent to the root node of the category tree.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The root node of a full default category tree includes &lt;b&gt;categoryId&lt;/b&gt; and &lt;b&gt;categoryName&lt;/b&gt; fields, but their values should not be relied upon. They provide no useful information for application development.&lt;/span&gt;&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/AncestorReference&quot;
+            }
+          },
+          &quot;categoryTreeNodeLevel&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;description&quot;: &quot;The absolute level of the category tree node in the hierarchy of its category tree.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The root node of any full category tree is always at level &lt;code&gt;&lt;b&gt;0&lt;/b&gt;&lt;/code&gt;.&lt;/span&gt;&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          },
+          &quot;relevancy&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;This field is reserved for internal or future use.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about a suggested category tree leaf node that corresponds to keywords provided in the request. It includes details about each of the category&apos;s ancestor nodes extending up to the root of the category tree.&quot;
+      },
+      &quot;CategorySuggestionResponse&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;categorySuggestions&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;Contains details about one or more suggested categories that correspond to the provided keywords. The array of suggested categories is sorted in order of eBay&apos;s confidence of the relevance of each category (the first category is the most relevant).&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;&lt;span style=\&quot;color:red\&quot;&gt;Important:&lt;/span&gt;&lt;/strong&gt; This call is not supported in the Sandbox environment. It will return a response payload in which the &lt;b&gt;categoryName&lt;/b&gt; fields contain random or boilerplate text regardless of the query submitted. &lt;/span&gt;&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/CategorySuggestion&quot;
+            }
+          },
+          &quot;categoryTreeId&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree from which suggestions are returned.&quot;
+          },
+          &quot;categoryTreeVersion&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The version of the category tree identified by &lt;b&gt;categoryTreeId&lt;/b&gt;. It&apos;s a good idea to cache this value for comparison so you can determine if this category tree has been modified in subsequent calls.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains an array of suggested category tree nodes that are considered by eBay to most closely correspond to the keywords provided in a query string, from a specified category tree.&quot;
+      },
+      &quot;CategoryTree&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;applicableMarketplaceIds&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;A list of one or more identifiers of the eBay marketplaces that use this category tree.&quot;,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;string&quot;,
+              &quot;description&quot;: &quot; For implementation help, refer to &lt;a href=&apos;https://developer.ebay.com/api-docs/commerce/taxonomy/types/bas:MarketplaceIdEnum&apos;&gt;eBay API documentation&lt;/a&gt;&quot;
+            }
+          },
+          &quot;categoryTreeId&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The unique identifier of this eBay category tree.&quot;
+          },
+          &quot;categoryTreeVersion&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The version of this category tree. It&apos;s a good idea to cache this value for comparison so you can determine if this category tree has been modified in subsequent calls.&quot;
+          },
+          &quot;rootCategoryNode&quot;: {
+            &quot;description&quot;: &quot;Contains details of all nodes of the category tree hierarchy, starting with the root node and down to the leaf nodes. This is a recursive structure.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The root node of a full default category tree includes the &lt;b&gt;categoryId&lt;/b&gt; field, but its value should not be relied upon. It provides no useful information for application development.&lt;/span&gt;&quot;,
+            &quot;$ref&quot;: &quot;#/components/schemas/CategoryTreeNode&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about all nodes of a specified eBay category tree.&quot;
+      },
+      &quot;CategoryTreeNode&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;category&quot;: {
+            &quot;description&quot;: &quot;Contains details about the current category tree node.&quot;,
+            &quot;$ref&quot;: &quot;#/components/schemas/Category&quot;
+          },
+          &quot;categoryTreeNodeLevel&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;description&quot;: &quot;The absolute level of the current category tree node in the hierarchy of its category tree.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; The root node of any full category tree is always at level &lt;code&gt;&lt;b&gt;0&lt;/b&gt;&lt;/code&gt;. &lt;/span&gt;&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          },
+          &quot;childCategoryTreeNodes&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;An array of one or more category tree nodes that are the immediate children of the current category tree node, as well as their children, recursively down to the leaf nodes.&lt;br&gt;&lt;br&gt;&lt;i&gt;Returned only if&lt;/i&gt; the current category tree node is not a leaf node (the value of &lt;b&gt;leafCategoryTreeNode&lt;/b&gt; is &lt;code&gt;false&lt;/code&gt;).&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/CategoryTreeNode&quot;
+            }
+          },
+          &quot;leafCategoryTreeNode&quot;: {
+            &quot;type&quot;: &quot;boolean&quot;,
+            &quot;description&quot;: &quot;A value of &lt;code&gt;true&lt;/code&gt; indicates that the current category tree node is a leaf node (it has no child nodes). A value of &lt;code&gt;false&lt;/code&gt; indicates that the current node has one or more child nodes, which are identified by the &lt;b&gt;childCategoryTreeNodes&lt;/b&gt; array.&lt;br&gt;&lt;br&gt;&lt;i&gt;Returned only if&lt;/i&gt; the value of this field is &lt;code&gt;true&lt;/code&gt;.&quot;
+          },
+          &quot;parentCategoryTreeNodeHref&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The href portion of the &lt;b&gt;getCategorySubtree&lt;/b&gt; call that retrieves the subtree below the parent of this category tree node.&lt;br&gt;&lt;br&gt;&lt;i&gt;Not returned if&lt;/i&gt; the current category tree node is the root node of its tree.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type contains information about all nodes of a category tree or subtree hierarchy, including and below the specified &lt;b&gt;Category&lt;/b&gt;, down to the leaf nodes. It is a recursive structure.&quot;
+      },
+      &quot;CompatibilityProperty&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;name&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;This is the actual name of the compatible vehicle property as it is known on the specified eBay marketplace and in the eBay category. This is the string value that should be used in the &lt;strong&gt;compatibility_property&lt;/strong&gt; and &lt;strong&gt;filter&lt;/strong&gt; query parameters of a &lt;strong&gt;getCompatibilityPropertyValues&lt;/strong&gt; request URI. &lt;br&gt;&lt;br&gt; Typical vehicle properties are &apos;Make&apos;, &apos;Model&apos;, &apos;Year&apos;, &apos;Engine&apos;, and &apos;Trim&apos;, but will vary based on the eBay marketplace and the eBay category.&quot;
+          },
+          &quot;localizedName&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;This is the localized name of the compatible vehicle property. The language that is used will depend on the user making the call, or based on the language specified if the &lt;strong&gt;Content-Language&lt;/strong&gt; HTTP header is used.&lt;br&gt;&lt;br&gt;In some instances, the string value in this field may be the same as the string in the corresponding &lt;strong&gt;name&lt;/strong&gt; field.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type is used by the &lt;strong&gt;compatibilityProperties&lt;/strong&gt; array that is returned in the &lt;strong&gt;getCompatibilityProperties&lt;/strong&gt; call. The &lt;strong&gt;compatibilityProperties&lt;/strong&gt; container consists of an array of all compatible vehicle properties applicable to the specified eBay marketplace and eBay category ID.&quot;
+      },
+      &quot;CompatibilityPropertyValue&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;value&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Each &lt;strong&gt;value&lt;/strong&gt; field shows one applicable compatible vehicle property value. The values that are returned will depend on the specified eBay marketplace, specified eBay category, and filters in the request.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type is used by the &lt;strong&gt;compatibilityPropertyValues&lt;/strong&gt; array that is returned in the &lt;strong&gt;getCompatibilityPropertyValues&lt;/strong&gt; response. The &lt;strong&gt;compatibilityPropertyValues&lt;/strong&gt; array contains all compatible vehicle property values that match the specified eBay marketplace, specified eBay category, and filters in the request. If the &lt;strong&gt;compatibility_property&lt;/strong&gt; parameter value in the request is &apos;Trim&apos;, each value returned in each &lt;strong&gt;value&lt;/strong&gt; field will be a different vehicle trim, applicable to any filters that are set in the &lt;string&gt;filter&lt;/string&gt; query parameter of the request, and also based on the eBay marketplace and category specified in the call request.&quot;
+      },
+      &quot;Error&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;category&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Identifies the type of erro.&quot;
+          },
+          &quot;domain&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Name for the primary system where the error occurred. This is relevant for application errors.&quot;
+          },
+          &quot;errorId&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;description&quot;: &quot;A unique number to identify the error.&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          },
+          &quot;inputRefIds&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;An array of request elements most closely associated to the error.&quot;,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          &quot;longMessage&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;A more detailed explanation of the error.&quot;
+          },
+          &quot;message&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Information on how to correct the problem, in the end user&apos;s terms and language where applicable.&quot;
+          },
+          &quot;outputRefIds&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;An array of request elements most closely associated to the error.&quot;,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          },
+          &quot;parameters&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;An array of name/value pairs that describe details the error condition. These are useful when multiple errors are returned.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/ErrorParameter&quot;
+            }
+          },
+          &quot;subdomain&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;Further helps indicate which subsystem the error is coming from. System subcategories include: Initialization, Serialization, Security, Monitoring, Rate Limiting, etc.&quot;
+          }
+        },
+        &quot;description&quot;: &quot;This type defines the fields that can be returned in an error.&quot;
+      },
+      &quot;ErrorParameter&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;name&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The object of the error.&quot;
+          },
+          &quot;value&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The value of the object.&quot;
+          }
+        }
+      },
+      &quot;GetCategoriesAspectResponse&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;categoryTreeId&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The unique identifier of the eBay category tree being requested.&quot;
+          },
+          &quot;categoryTreeVersion&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The version of the category tree that is returned in the &lt;b&gt;categoryTreeId&lt;/b&gt; field.&quot;
+          },
+          &quot;categoryAspects&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;An array of aspects that are appropriate or necessary for accurately describing items in a particular leaf category.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/CategoryAspect&quot;
+            }
+          }
+        }
+      },
+      &quot;GetCompatibilityMetadataResponse&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;compatibilityProperties&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;This container consists of an array of all compatible vehicle properties applicable to the specified eBay marketplace and eBay category ID.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/CompatibilityProperty&quot;
+            }
+          }
+        },
+        &quot;description&quot;: &quot;This type is used by the base response of the &lt;strong&gt;getCompatibilityProperties&lt;/strong&gt; method.&quot;
+      },
+      &quot;GetCompatibilityPropertyValuesResponse&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;compatibilityPropertyValues&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;This array contains all compatible vehicle property values that match the specified eBay marketplace, specified eBay category, and filters in the request. If the &lt;strong&gt;compatibility_property&lt;/strong&gt; parameter value in the request is &apos;Trim&apos;, each value returned in each &lt;strong&gt;value&lt;/strong&gt; field will be a different vehicle trim, applicable to any filters that are set in the &lt;string&gt;filter&lt;/string&gt; query parameter of the request, and also based on the eBay marketplace and category specified in the call request.&quot;,
+            &quot;items&quot;: {
+              &quot;$ref&quot;: &quot;#/components/schemas/CompatibilityPropertyValue&quot;
+            }
+          }
+        },
+        &quot;description&quot;: &quot;The base response type of the &lt;strong&gt;getCompatibilityPropertyValues&lt;/strong&gt; method.&quot;
+      },
+      &quot;RelevanceIndicator&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;searchCount&quot;: {
+            &quot;type&quot;: &quot;integer&quot;,
+            &quot;description&quot;: &quot;The number of recent searches (based on 30 days of data) for the aspect.&quot;,
+            &quot;format&quot;: &quot;int32&quot;
+          }
+        },
+        &quot;description&quot;: &quot;The relevance of this aspect. This field is returned if eBay has data on how many searches have been performed for listings in the category using this item aspect.&lt;br&gt;&lt;br&gt;&lt;span class=\&quot;tablenote\&quot;&gt; &lt;strong&gt;Note:&lt;/strong&gt; This container is restricted to applications that have been granted permission to access this feature. You must submit an &lt;a href=\&quot;https://developer.ebay.com/my/support/tickets?tab=app-check \&quot;&gt;App Check ticket&lt;/a&gt; to request this access. In the App Check form, add a note to the &lt;b&gt;Application Title/Summary&lt;/b&gt; and/or &lt;b&gt;Application Details&lt;/b&gt; fields that you want access to &apos;Buyer Demand Data&apos; in the Taxonomy API.&lt;/span&gt;&quot;
+      },
+      &quot;ValueConstraint&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+          &quot;applicableForLocalizedAspectName&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;The name of the control aspect on which the current aspect value depends.&quot;
+          },
+          &quot;applicableForLocalizedAspectValues&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;description&quot;: &quot;Contains a list of the values of the control aspect on which this aspect&apos;s value depends. When the control aspect has any of the specified values, the current value of the current aspect will also be available.&quot;,
+            &quot;items&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        },
+        &quot;description&quot;: &quot;This type contains a list of the dependencies that identify when a particular value is available for a given aspect of a given category. Each dependency specifies the values of another aspect of the same category (the &lt;i&gt;control&lt;/i&gt; aspect), for which the given value of the given aspect can also be selected by the seller. This container consists of constraint information for the corresponding product aspect value.&quot;
+      }
+    },
+    &quot;securitySchemes&quot;: {
+      &quot;api_auth&quot;: {
+        &quot;type&quot;: &quot;oauth2&quot;,
+        &quot;description&quot;: &quot;The security definitions for this API. Please check individual operations for applicable scopes.&quot;,
+        &quot;flows&quot;: {
+          &quot;clientCredentials&quot;: {
+            &quot;tokenUrl&quot;: &quot;https://api.ebay.com/identity/v1/oauth2/token&quot;,
+            &quot;scopes&quot;: {
+              &quot;https://api.ebay.com/oauth/api_scope&quot;: &quot;View public data from eBay&quot;,
+              &quot;https://api.ebay.com/oauth/api_scope/metadata.insights&quot;: &quot;View metadata insights such as aspect relevance.&quot;
+            }
+          }
+        }
+      }
+    }
+  }
+}</schema>
+    <schemaAbsoluteUrl>https://developers.ebay.com/api-docs/master/commerce/taxonomy/openapi/3/commerce_taxonomy_v1_oas3.json</schemaAbsoluteUrl>
+    <schemaType>OpenApi3</schemaType>
+    <serviceBinding>{&quot;host&quot;:&quot;api.ebay.com{basePath}&quot;,&quot;basePath&quot;:&quot;&quot;,&quot;allowedSchemes&quot;:[&quot;HTTPS&quot;],&quot;requestMediaTypes&quot;:[],&quot;responseMediaTypes&quot;:[],&quot;compatibleMediaTypes&quot;:{}}</serviceBinding>
+    <status>Complete</status>
+    <systemVersion>5</systemVersion>
+</ExternalServiceRegistration>
