@@ -7,17 +7,34 @@ public with sharing class RentallInventoryService {
      * This method will determine if the inventory item is available between
      * the dates passed in
      * @param   inventoryId     String - the id of the InventoryItem__c record
-     * @param   startDate       Date - the start date of the rental window to check
-     * @param   endDate         Date - the end date of the rental window to check
-     * @return  boolean         true if inventory available during rental window, false if not.
+     * @return  boolean         if true, only include rentals that have not been completed/returned. false returns
+     *                          all records regardless of rental status.
      */
     @AuraEnabled
-    public static boolean isRentalInventoryAvailable(String inventoryId, Date startDate, Date endDate){
-        //get the Items reserved for the Date provided.
-        /*
-        AggregateResult[] totalReserved = [SELECT SUM(Quantity__c) TotalReserved FROM ItemReservation__c WHERE
-            InventoryItem__c =:inventoryId AND StartDate__c <= :endDate AND EndDate >= :startDate];
-        */
-        return false;
+    public static List<ItemReservation__c> obtainReservationLinesByInventoryId(String inventoryId, 
+            Boolean excludeCompletedRentals) {
+        List<ItemReservation__c> retList;
+        Set<String> includedRentalStatusSet = new Set<String>{'Tenative','Confirmed','Delivered'};
+        if(!excludeCompletedRentals){
+            includedRentalStatusSet.add('Received');
+            includedRentalStatusSet.add('Fulfilled/Completed');
+        }
+        try {
+            if(String.isBlank(inventoryId)){
+                throw new IllegalArgumentException('inventoryId is required for obtainReservationLinesByInventoryId.');
+            }
+            System.SObjectAccessDecision decision = Security.stripInaccessible(System.AccessType.READABLE, [
+                SELECT Id, Name, InventoryItem__c, LocationName__c, StartDate__c, EndDate__c, Rental__c, TotalRental__c,
+                    Quantity__c, Rental__r.Status__c
+                FROM ItemReservation__c
+                WHERE Rental__r.Status__c IN :includedRentalStatusSet
+            ],true);
+            if(!decision.getRecords().isEmpty()){
+                retList = decision.getRecords();
+            }
+        } catch(System.Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
+        }
+        return retList;
     }
 }

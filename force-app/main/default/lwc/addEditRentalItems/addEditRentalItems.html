@@ -6,6 +6,9 @@
         <div class="slds-var-m-horizontal_x-small">
             <template if:true={showAddItemForm}>
                 <div class="slds-grid slds-wrap slds-gutters_small slds-box slds-theme_shade">
+                    <div class="slds-col slds-size_1-of-1 sklds-text-align_right">
+                        <lightning-button-icon icon-name="utility:close" size="medium" variant="bare" onclick={handleShowAddItemClick}></lightning-button-icon>
+                    </div>
                     <div class="slds-col slds-large-size_1-of-4 slds-small-size_1-of-1 slds-medium-size_1-of-1">
                         <c-lookup required
                             onsearch={handleInventorySearch} 
