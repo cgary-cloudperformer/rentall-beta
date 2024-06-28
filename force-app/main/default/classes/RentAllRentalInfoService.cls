@@ -41,6 +41,10 @@ public with sharing class RentAllRentalInfoService {
         List<LookupSearchResult> retList = new List<LookupSearchResult>();
         
         try {
+            if(String.isBlank(searchTerm)){
+                throw new IllegalArgumentException('searchTerm is a required parameter');
+            }
+            searchTerm = searchTerm + '*';
             String objectTypeName = Schema.InventoryItem__c.getSObjectType().getDescribe().getName();
             List<List<sObject>> soslResults = [FIND :searchTerm IN ALL FIELDS
                 RETURNING InventoryItem__c(Id,Name,ProductName__c,Location__c,LocationName__c WHERE RentalProduct__r.IsAvailable__c = true)];
